@@ -307,10 +307,6 @@
 
   <script>
     // ====== CONFIG: use your published Products sheet URL as CSV ======
-    // You gave this URL:
-    // https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pubhtml?gid=790653222&single=true
-    //
-    // Convert it to CSV output by changing "pubhtml" → "pub" and adding output=csv
     const SHEET_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv";
 
@@ -321,6 +317,45 @@
     const searchInput = document.getElementById("searchInput");
 
     let allProducts = [];
+
+    // Normalize Google Drive-style links into a clean direct image URL
+    function normalizeImageUrl(raw) {
+      if (!raw) return "";
+      const url = String(raw).trim();
+      if (!url) return "";
+
+      let fileId = "";
+
+      // pattern: /file/d/FILE_ID/
+      let m = url.match(/\/file\/d\/([^/]+)/);
+      if (m && m[1]) {
+        fileId = m[1];
+      }
+
+      // pattern: ?id=FILE_ID
+      if (!fileId) {
+        m = url.match(/[?&]id=([^&]+)/);
+        if (m && m[1]) {
+          fileId = m[1];
+        }
+      }
+
+      // pattern: uc?export=view&id=FILE_ID
+      if (!fileId) {
+        m = url.match(/uc\?export=view&id=([^&]+)/);
+        if (m && m[1]) {
+          fileId = m[1];
+        }
+      }
+
+      if (fileId) {
+        const clean = "https://drive.google.com/uc?export=view&id=" + fileId;
+        return clean;
+      }
+
+      // If it's not a Drive URL or we couldn't parse it, just return trimmed
+      return url;
+    }
 
     async function fetchProducts() {
       try {
@@ -413,13 +448,22 @@
         const imgWrap = document.createElement("div");
         imgWrap.className = "product-image-wrap";
 
-        if (p.image_url) {
+        const normalizedUrl = normalizeImageUrl(p.image_url);
+        console.log("Image URL for", p.short_name || p.product_name, "→", normalizedUrl);
+
+        if (normalizedUrl) {
           const img = document.createElement("img");
-          img.src = p.image_url;
+          img.src = normalizedUrl;
           img.alt = p.short_name || p.product_name || "Product image";
+
+          // If URL fails at runtime, show placeholder text
+          img.onerror = () => {
+            imgWrap.textContent = "Product image not available";
+          };
+
           imgWrap.appendChild(img);
         } else {
-          imgWrap.innerHTML = "Product Image Placeholder";
+          imgWrap.textContent = "Product Image Placeholder";
         }
 
         // Title & meta
