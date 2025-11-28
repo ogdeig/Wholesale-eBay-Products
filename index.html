@@ -178,6 +178,7 @@
       color: #4b5563;
     }
 
+    /* Product card styles (shared with Featured Products) */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -204,6 +205,13 @@
       font-size: 0.78rem;
       color: #6b7280;
       text-align: center;
+    }
+    .product-image-wrap img {
+      max-width: 100%;
+      max-height: 140px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
     }
     .product-title {
       font-weight: 600;
@@ -235,6 +243,11 @@
       font-weight: 700;
       color: #047857;
     }
+    .product-shipping-note {
+      font-size: 0.72rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
     .product-profit {
       font-size: 0.8rem;
       color: #4b5563;
@@ -245,10 +258,11 @@
       justify-content: space-between;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
     }
     .product-tag {
-      font-size: 0.75rem;
-      padding: 4px 8px;
+      font-size: 0.72rem;
+      padding: 3px 8px;
       border-radius: 999px;
       background: #ecfdf5;
       color: #047857;
@@ -257,6 +271,15 @@
     .product-link {
       font-size: 0.8rem;
       font-weight: 500;
+    }
+
+    .status-message {
+      font-size: 0.86rem;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .status-message.error {
+      color: #b91c1c;
     }
 
     form label {
@@ -318,7 +341,7 @@
         <div class="logo">Wholesale eBay Products</div>
         <div class="nav-links">
           <a href="#how-it-works">How it works</a>
-          <a href="#featured-products">Sample products</a>
+          <a href="#featured-products">Featured products</a>
           <a href="products.html">All products</a>
           <a href="#apply">Apply</a>
         </div>
@@ -390,83 +413,23 @@
         </div>
       </section>
 
+      <!-- NEW: Live Featured Products from Google Sheets -->
       <section id="featured-products">
-        <h2>Sample Products & Reseller Pricing</h2>
-        <p>Here are a few example products. Full details and more options are listed on the Products page.</p>
+        <h2>Featured Products (Live from Our Sheet)</h2>
+        <p>
+          These are select products currently marked as <strong>Featured</strong> in our internal Products sheet.
+          All prices are reseller prices with <strong>U.S. shipping included</strong>.
+        </p>
 
-        <div class="products-grid">
-          <article class="product-card">
-            <div class="product-image-wrap">
-              Product Image Placeholder<br />
-              (Office Software)
-            </div>
-            <div class="product-title">Pro Office Software License (Digital)</div>
-            <div class="product-meta">Category: Software &amp; Licenses · Type: Digital</div>
-            <div class="product-price-row">
-              <div>
-                <div class="product-price-label">Reseller Price</div>
-                <div class="product-price">$24.00</div>
-              </div>
-              <div class="product-profit">
-                Suggested eBay: $34–$39<br />
-                Est. profit: $10–$15
-              </div>
-            </div>
-            <div class="product-footer">
-              <span class="product-tag">High Demand</span>
-              <a href="products.html" class="product-link">View all products →</a>
-            </div>
-          </article>
+        <div id="featuredStatus" class="status-message">Loading featured products…</div>
 
-          <article class="product-card">
-            <div class="product-image-wrap">
-              Product Image Placeholder<br />
-              (Keyboard & Mouse)
-            </div>
-            <div class="product-title">Wireless Keyboard &amp; Mouse Bundle</div>
-            <div class="product-meta">Category: PC Accessories · Type: Physical</div>
-            <div class="product-price-row">
-              <div>
-                <div class="product-price-label">Reseller Price</div>
-                <div class="product-price">$18.50</div>
-              </div>
-              <div class="product-profit">
-                Suggested eBay: $27–$32<br />
-                Est. profit: $8–$13
-              </div>
-            </div>
-            <div class="product-footer">
-              <span class="product-tag">Fast Ship</span>
-              <a href="products.html" class="product-link">View all products →</a>
-            </div>
-          </article>
-
-          <article class="product-card">
-            <div class="product-image-wrap">
-              Product Image Placeholder<br />
-              (Laptop Stand)
-            </div>
-            <div class="product-title">Ergonomic Laptop Stand</div>
-            <div class="product-meta">Category: Home &amp; Office · Type: Physical</div>
-            <div class="product-price-row">
-              <div>
-                <div class="product-price-label">Reseller Price</div>
-                <div class="product-price">$14.00</div>
-              </div>
-              <div class="product-profit">
-                Suggested eBay: $22–$26<br />
-                Est. profit: $8–$12
-              </div>
-            </div>
-            <div class="product-footer">
-              <span class="product-tag">Steady Seller</span>
-              <a href="products.html" class="product-link">View all products →</a>
-            </div>
-          </article>
+        <div id="featuredProductsGrid" class="products-grid">
+          <!-- Featured products injected here -->
         </div>
 
         <p class="small-text">
-          Numbers above are sample figures. Final pricing is confirmed in your product package and may change over time.
+          Featured products are a small sample of what’s available. Visit the
+          <a href="products.html">full product catalog</a> for more options and details.
         </p>
       </section>
 
@@ -559,5 +522,210 @@
       Wholesale eBay Products is an independent supplier and is not affiliated with or endorsed by eBay or any product brand owners.
     </div>
   </footer>
+
+  <!-- CSV parser from CDN (same as products.html) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    // ====== CONFIG: same Products sheet as products.html ======
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv";
+
+    const featuredStatus = document.getElementById("featuredStatus");
+    const featuredGrid = document.getElementById("featuredProductsGrid");
+    const MAX_FEATURED = 5;
+
+    // Normalize Google Drive-style links into a clean direct image URL
+    function normalizeImageUrl(raw) {
+      if (!raw) return "";
+      const url = String(raw).trim();
+      if (!url) return "";
+
+      let fileId = "";
+
+      // pattern: /file/d/FILE_ID/
+      let m = url.match(/\/file\/d\/([^/]+)/);
+      if (m && m[1]) {
+        fileId = m[1];
+      }
+
+      // pattern: ?id=FILE_ID
+      if (!fileId) {
+        m = url.match(/[?&]id=([^&]+)/);
+        if (m && m[1]) {
+          fileId = m[1];
+        }
+      }
+
+      // pattern: uc?export=view&id=FILE_ID  (or export=download)
+      if (!fileId) {
+        m = url.match(/uc\?export=\w+&id=([^&]+)/);
+        if (m && m[1]) {
+          fileId = m[1];
+        }
+      }
+
+      if (fileId) {
+        return "https://drive.google.com/uc?export=download&id=" + fileId;
+      }
+
+      return url;
+    }
+
+    async function fetchFeaturedProducts() {
+      try {
+        const res = await fetch(SHEET_CSV_URL);
+        const csv = await res.text();
+
+        const parsed = Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true
+        });
+
+        const allRows = parsed.data || [];
+
+        const activeFeatured = allRows
+          .map(row => row)
+          .filter(p => {
+            const activeVal = String(p.active || "").toLowerCase().trim();
+            const isActive = activeVal === "true" || activeVal === "yes" || activeVal === "1";
+
+            const featVal = String(p.is_featured || "").toLowerCase().trim();
+            const isFeatured = featVal === "true" || featVal === "yes" || featVal === "1";
+
+            return isActive && isFeatured;
+          });
+
+        if (!activeFeatured.length) {
+          featuredStatus.textContent =
+            "No featured products are marked in your Products sheet yet. Set is_featured = TRUE on a few rows to show them here.";
+          featuredGrid.innerHTML = "";
+          return;
+        }
+
+        const subset = activeFeatured.slice(0, MAX_FEATURED);
+        featuredStatus.textContent = `Showing ${subset.length} featured product${subset.length === 1 ? "" : "s"}.`;
+
+        featuredGrid.innerHTML = "";
+        subset.forEach(p => {
+          const card = document.createElement("article");
+          card.className = "product-card";
+
+          // Image
+          const imgWrap = document.createElement("div");
+          imgWrap.className = "product-image-wrap";
+
+          const normalizedUrl = normalizeImageUrl(p.image_url);
+          if (normalizedUrl) {
+            const img = document.createElement("img");
+            img.src = normalizedUrl;
+            img.alt = p.short_name || p.product_name || "Product image";
+            img.onerror = () => {
+              imgWrap.textContent = "Product image not available";
+            };
+            imgWrap.appendChild(img);
+          } else {
+            imgWrap.textContent = "Product Image Placeholder";
+          }
+
+          // Title & meta
+          const title = document.createElement("div");
+          title.className = "product-title";
+          title.textContent = p.short_name || p.product_name || "Untitled Product";
+
+          const meta = document.createElement("div");
+          meta.className = "product-meta";
+          meta.textContent = [
+            p.category || null,
+            p.product_type ? `Type: ${p.product_type}` : null
+          ]
+            .filter(Boolean)
+            .join(" · ");
+
+          // Price + shipping
+          const priceRow = document.createElement("div");
+          priceRow.className = "product-price-row";
+
+          const left = document.createElement("div");
+          const priceLabel = document.createElement("div");
+          priceLabel.className = "product-price-label";
+          priceLabel.textContent = "Reseller Price";
+
+          const priceVal = document.createElement("div");
+          priceVal.className = "product-price";
+
+          const reseller = p.reseller_price_usd ? Number(p.reseller_price_usd) : null;
+          priceVal.textContent =
+            reseller != null && !isNaN(reseller) ? `$${reseller.toFixed(2)}` : "TBD";
+
+          const shippingNote = document.createElement("div");
+          shippingNote.className = "product-shipping-note";
+          shippingNote.textContent = "US shipping included";
+
+          left.appendChild(priceLabel);
+          left.appendChild(priceVal);
+          left.appendChild(shippingNote);
+
+          const profit = document.createElement("div");
+          profit.className = "product-profit";
+
+          const minPrice = p.suggested_min_price_usd
+            ? Number(p.suggested_min_price_usd)
+            : null;
+          const maxPrice = p.suggested_max_price_usd
+            ? Number(p.suggested_max_price_usd)
+            : null;
+
+          if (
+            minPrice != null &&
+            maxPrice != null &&
+            !isNaN(minPrice) &&
+            !isNaN(maxPrice)
+          ) {
+            profit.textContent = `Suggested eBay: $${minPrice.toFixed(
+              2
+            )}–$${maxPrice.toFixed(2)}`;
+          }
+
+          priceRow.appendChild(left);
+          if (profit.textContent) {
+            priceRow.appendChild(profit);
+          }
+
+          // Footer
+          const footer = document.createElement("div");
+          footer.className = "product-footer";
+
+          const tag = document.createElement("span");
+          tag.className = "product-tag";
+          tag.textContent = p.product_type ? `${p.product_type} · Featured` : "Featured";
+
+          const link = document.createElement("a");
+          link.className = "product-link";
+          link.href = "products.html";
+          link.textContent = "View details →";
+
+          footer.appendChild(tag);
+          footer.appendChild(link);
+
+          card.appendChild(imgWrap);
+          card.appendChild(title);
+          card.appendChild(meta);
+          card.appendChild(priceRow);
+          card.appendChild(footer);
+
+          featuredGrid.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error loading featured products:", err);
+        featuredStatus.textContent =
+          "Could not load featured products from Google Sheets. Check that the sheet is published and accessible.";
+        featuredStatus.classList.add("error");
+        featuredGrid.innerHTML = "";
+      }
+    }
+
+    // Kick off featured fetch on load
+    fetchFeaturedProducts();
+  </script>
 </body>
 </html>
