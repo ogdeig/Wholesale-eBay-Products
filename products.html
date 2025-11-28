@@ -340,16 +340,17 @@
         }
       }
 
-      // pattern: uc?export=view&id=FILE_ID
+      // pattern: uc?export=view&id=FILE_ID  (or export=download)
       if (!fileId) {
-        m = url.match(/uc\?export=view&id=([^&]+)/);
+        m = url.match(/uc\?export=\w+&id=([^&]+)/);
         if (m && m[1]) {
           fileId = m[1];
         }
       }
 
       if (fileId) {
-        const clean = "https://drive.google.com/uc?export=view&id=" + fileId;
+        // IMPORTANT CHANGE: export=download (not export=view)
+        const clean = "https://drive.google.com/uc?export=download&id=" + fileId;
         return clean;
       }
 
@@ -367,10 +368,6 @@
           skipEmptyLines: true
         });
 
-        // CSV headers should match:
-        // product_id, product_name, short_name, category, product_type,
-        // reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
-        // est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes
         allProducts = (parsed.data || [])
           .map(row => row)
           .filter(p => {
@@ -456,7 +453,6 @@
           img.src = normalizedUrl;
           img.alt = p.short_name || p.product_name || "Product image";
 
-          // If URL fails at runtime, show placeholder text
           img.onerror = () => {
             imgWrap.textContent = "Product image not available";
           };
