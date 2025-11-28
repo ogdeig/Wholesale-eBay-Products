@@ -224,11 +224,12 @@
         Use this form to add products to your <strong>Products</strong> sheet. Fields marked with * are recommended.
       </p>
 
-      <!-- IMPORTANT: uses the SAME Web App URL as your Apply form -->
+      <!-- IMPORTANT: SAME Web App URL as index.html (seller application) -->
       <form
         method="POST"
         action="https://script.google.com/macros/s/AKfycbwYGu_olLf6y0yNiNWgEdWUWgt-W_mF-FtS8HIJbKezgKTXYyrA3NQcy87cRz_FNuj-/exec"
       >
+        <!-- This is what tells Apps Script to use the Products handler -->
         <input type="hidden" name="form_type" value="add_product" />
         <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/admin.html" />
 
