@@ -169,6 +169,11 @@
       font-weight: 700;
       color: #047857;
     }
+    .product-shipping-note {
+      font-size: 0.72rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
     .product-profit {
       font-size: 0.8rem;
       color: #4b5563;
@@ -283,7 +288,8 @@
 
         <div class="small-text">
           Note: Reseller pricing and suggested price ranges are subject to change. Always refer to the
-          most recent product package we email you for final numbers.
+          most recent product package we email you for final numbers. All reseller prices shown include
+          <strong>U.S. shipping</strong> so you know your all-in cost.
         </div>
       </section>
     </div>
@@ -495,8 +501,13 @@
           ? `$${reseller.toFixed(2)}`
           : "TBD";
 
+        const shippingNote = document.createElement("div");
+        shippingNote.className = "product-shipping-note";
+        shippingNote.textContent = "US shipping included";
+
         left.appendChild(priceLabel);
         left.appendChild(priceVal);
+        left.appendChild(shippingNote);
 
         const profit = document.createElement("div");
         profit.className = "product-profit";
@@ -577,29 +588,5 @@
     // Kick things off
     fetchProducts();
   </script>
-
-  <!--
-    HOW TO USE THIS:
-
-    1. In your Google Sheet:
-       - Make sure the "Products" tab has headers EXACTLY:
-         product_id, product_name, short_name, category, product_type,
-         reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
-         est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes
-
-    2. Mark any row you want visible with:
-       active = TRUE   (or yes, or 1)
-
-    3. Optional:
-       is_featured = TRUE for products you want tagged as "Featured" on this page.
-
-    4. Because you've already "Publish to web" on this sheet (that URL you sent),
-       this page pulls live data from:
-       https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv
-
-    5. Just edit the Products tab → refresh:
-       https://ogdeig.github.io/Wholesale-eBay-Products/products.html
-       and you’ll see your changes.
-  -->
 </body>
 </html>
