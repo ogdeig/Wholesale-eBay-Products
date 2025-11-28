@@ -12,6 +12,7 @@
       color: #111827;
       background: #f3f4f6;
       line-height: 1.6;
+      font-size: 16px;
     }
     a { color: #2563eb; text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -177,7 +178,6 @@
       color: #4b5563;
     }
 
-    /* Featured products */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -259,7 +259,6 @@
       font-weight: 500;
     }
 
-    /* Apply form */
     form label {
       display: block;
       font-size: 0.85rem;
@@ -297,7 +296,6 @@
       color: #6b7280;
       margin-top: 4px;
     }
-    .center { text-align: center; }
 
     footer {
       padding: 18px 20px 22px;
@@ -364,7 +362,6 @@
 
   <main>
     <div class="container">
-      <!-- How it works -->
       <section id="how-it-works">
         <h2>How Wholesale eBay Products Works</h2>
         <p>We keep it very simple so you can stay focused on listing and selling.</p>
@@ -393,12 +390,9 @@
         </div>
       </section>
 
-      <!-- Featured products -->
       <section id="featured-products">
         <h2>Sample Products & Reseller Pricing</h2>
-        <p>
-          Here are a few example products. Full details and more options are listed on the Products page.
-        </p>
+        <p>Here are a few example products. Full details and more options are listed on the Products page.</p>
 
         <div class="products-grid">
           <article class="product-card">
@@ -476,7 +470,6 @@
         </p>
       </section>
 
-      <!-- Apply form -->
       <section id="apply">
         <h2>Apply to Get Your Wholesale eBay Product Package</h2>
         <p>
@@ -484,13 +477,14 @@
           plus your personal Google Sheet to track sales.
         </p>
 
-        <!-- IMPORTANT:
-             Replace YOUR_APPS_SCRIPT_URL_HERE with your Google Apps Script Web App URL
-             that writes rows into your "Applications" Google Sheet.
-        -->
-        <form id="applyForm" method="POST" action="YOUR_APPS_SCRIPT_URL_HERE">
-          <!-- Hidden field to tell your script what this form is -->
+        <!-- Form posts to your Google Apps Script Web App -->
+        <form
+          id="applyForm"
+          method="POST"
+          action="https://script.google.com/macros/s/AKfycbwYGu_olLf6y0yNiNWgEdWUWgt-W_mF-FtS8HIJbKezgKTXYyrA3NQcy87cRz_FNuj-/exec"
+        >
           <input type="hidden" name="form_type" value="seller_application" />
+          <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/" />
 
           <div class="form-row">
             <div>
