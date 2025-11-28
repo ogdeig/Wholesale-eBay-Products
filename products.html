@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Products – Wholesale eBay Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Browse wholesale-ready eBay products with reseller pricing and suggested eBay prices." />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+      line-height: 1.6;
+    }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 18px 20px;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-links a {
+      color: #e5e7eb;
+      margin-left: 16px;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover { color: #ffffff; }
+
+    main {
+      padding: 24px 20px 40px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    .page-intro {
+      font-size: 0.96rem;
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      background: #ffffff;
+      padding: 8px 10px;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+    .filter-bar input,
+    .filter-bar select {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 6px 10px;
+      font-size: 0.86rem;
+      outline: none;
+      min-width: 140px;
+    }
+    .filter-bar input::placeholder { color: #9ca3af; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .product-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 12px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    .product-image-wrap {
+      background: #e5e7eb;
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 10px;
+      min-height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    .product-image-wrap img {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    .product-title {
+      font-weight: 600;
+      font-size: 0.96rem;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+    .product-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .product-desc {
+      font-size: 0.84rem;
+      color: #4b5563;
+      margin-bottom: 8px;
+    }
+    .product-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .product-price-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .product-price {
+      font-weight: 700;
+      color: #047857;
+    }
+    .product-profit {
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+    .product-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+    .product-tag {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #bbf7d0;
+    }
+    .product-link {
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .empty-state {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    footer {
+      padding: 18px 20px 22px;
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+    }
+    footer a {
+      color: #4b5563;
+      margin: 0 6px;
+      font-size: 0.8rem;
+    }
+    footer a:hover { color: #111827; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="logo">Wholesale eBay Products</div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="index.html#apply">Apply</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Wholesale Product List</h1>
+      <p class="page-intro">
+        These are sample wholesale-friendly products designed for eBay sellers. For each approved seller, we email
+        a product package with images, titles, descriptions, and the same reseller pricing shown here.
+      </p>
+
+      <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Search products..." />
+        <select id="categoryFilter">
+          <option value="">All categories</option>
+          <option value="Software & Licenses">Software & Licenses</option>
+          <option value="PC Accessories">PC Accessories</option>
+          <option value="Home & Office">Home & Office</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Gadgets">Gadgets</option>
+        </select>
+        <select id="typeFilter">
+          <option value="">All types</option>
+          <option value="Digital">Digital</option>
+          <option value="Physical">Physical</option>
+        </select>
+      </div>
+
+      <div id="productsGrid" class="products-grid"></div>
+      <div id="emptyState" class="empty-state" style="display:none;">
+        No products match your filters. Try clearing your search or category.
+      </div>
+
+      <p class="page-intro" style="font-size:0.84rem; margin-top:20px;">
+        Reseller pricing is shown so you can estimate your profit before applying. Final pricing and availability
+        may change and will always be confirmed in your product package email.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div style="margin-bottom:6px;">
+      &copy; 2025 Wholesale eBay Products. All rights reserved.
+    </div>
+    <div>
+      <a href="index.html#apply">Apply</a> ·
+      <a href="#">Terms</a> ·
+      <a href="#">Privacy</a>
+    </div>
+  </footer>
+
+  <script>
+    // Later: replace this with a fetch() from your Google Sheet / Apps Script endpoint.
+    const PRODUCTS_DATA = [
+      // Software & digital
+      { id: "P001", title: "Pro Office Software License (Digital)", category: "Software & Licenses", type: "Digital",
+        imageUrl: "", resellerPrice: 24, suggestedLow: 34, suggestedHigh: 39,
+        shortDesc: "Single-user office suite license delivered by email. Great for students and home offices.",
+        tags: ["High Demand"] },
+      { id: "P002", title: "Antivirus Security Suite – 1 Year (Digital)", category: "Software & Licenses", type: "Digital",
+        imageUrl: "", resellerPrice: 11, suggestedLow: 18, suggestedHigh: 22,
+        shortDesc: "1-year subscription license for a popular antivirus product, delivered digitally.",
+        tags: ["Recurring Buyers"] },
+      { id: "P003", title: "PDF Editor Pro License (Digital)", category: "Software & Licenses", type: "Digital",
+        imageUrl: "", resellerPrice: 16, suggestedLow: 24, suggestedHigh: 29,
+        shortDesc: "Professional PDF editing software license ideal for freelancers and small businesses.",
+        tags: ["Remote Work"] },
+
+      // PC Accessories
+      { id: "P004", title: "Wireless Keyboard & Mouse Bundle", category: "PC Accessories", type: "Physical",
+        imageUrl: "", resellerPrice: 18.5, suggestedLow: 27, suggestedHigh: 32,
+        shortDesc: "2.4GHz wireless combo with quiet keys and ergonomic mouse. Plug-and-play.",
+        tags: ["Fast Ship"] },
+      { id: "P005", title: "RGB Gaming Mouse (Programmable)", category: "PC Accessories", type: "Physical",
+        imageUrl: "", resellerPrice: 11.5, suggestedLow: 19, suggestedHigh: 23,
+        shortDesc: "Adjustable DPI, RGB lighting, and side buttons. Perfect for budget gaming builds.",
+        tags: ["Gaming"] },
+      { id: "P006", title: "Extended Desk Mouse Pad (XL)", category: "PC Accessories", type: "Physical",
+        imageUrl: "", resellerPrice: 8, suggestedLow: 15, suggestedHigh: 19,
+        shortDesc: "Large, non-slip desk mat for keyboard and mouse. Great add-on item.",
+        tags: ["Add-On Sale"] },
+
+      // Home & Office
+      { id: "P007", title: "Ergonomic Laptop Stand", category: "Home & Office", type: "Physical",
+        imageUrl: "", resellerPrice: 14, suggestedLow: 22, suggestedHigh: 26,
+        shortDesc: "Adjustable aluminum stand to improve posture and airflow for laptops.",
+        tags: ["Home Office"] },
+      { id: "P008", title: "USB LED Desk Lamp with Touch Control", category: "Home & Office", type: "Physical",
+        imageUrl: "", resellerPrice: 10.5, suggestedLow: 18, suggestedHigh: 22,
+        shortDesc: "Modern LED lamp with touch controls and multiple brightness levels.",
+        tags: ["Giftable"] },
+      { id: "P009", title: "Cable Management Kit (20 pcs)", category: "Home & Office", type: "Physical",
+        imageUrl: "", resellerPrice: 6, suggestedLow: 12, suggestedHigh: 16,
+        shortDesc: "Clips and ties to organize cables behind desks and TVs.",
+        tags: ["Low Cost"] },
+
+      // Electronics / Gadgets
+      { id: "P010", title: "Bluetooth Earbuds with Charging Case", category: "Electronics", type: "Physical",
+        imageUrl: "", resellerPrice: 15.5, suggestedLow: 24, suggestedHigh: 29,
+        shortDesc: "Compact wireless earbuds with noise reduction and portable charging case.",
+        tags: ["Popular"] },
+      { id: "P011", title: "Portable Power Bank 10,000 mAh", category: "Electronics", type: "Physical",
+        imageUrl: "", resellerPrice: 12.5, suggestedLow: 20, suggestedHigh: 25,
+        shortDesc: "Slim backup battery for phones and tablets with dual USB output.",
+        tags: ["Travel"] },
+      { id: "P012", title: "USB-C Multiport Hub (7-in-1)", category: "Electronics", type: "Physical",
+        imageUrl: "", resellerPrice: 17, suggestedLow: 27, suggestedHigh: 32,
+        shortDesc: "Adds HDMI, USB, and card reader ports to laptops via USB-C.",
+        tags: ["Laptop Accessory"] },
+
+      // Small gadgets
+      { id: "P013", title: "Screen Cleaning Kit", category: "Gadgets", type: "Physical",
+        imageUrl: "", resellerPrice: 4, suggestedLow: 9, suggestedHigh: 12,
+        shortDesc: "Spray and microfiber cloth set for monitors, laptops, and phones.",
+        tags: ["Add-On"] },
+      { id: "P014", title: "Phone Stand & Holder (Foldable)", category: "Gadgets", type: "Physical",
+        imageUrl: "", resellerPrice: 3.5, suggestedLow: 8, suggestedHigh: 11,
+        shortDesc: "Pocket-sized phone stand perfect for desks and travel.",
+        tags: ["Impulse Buy"] },
+      { id: "P015", title: "USB-C to USB-A Adapter 3-Pack", category: "Gadgets", type: "Physical",
+        imageUrl: "", resellerPrice: 5, suggestedLow: 10, suggestedHigh: 13,
+        shortDesc: "3-pack of USB adapters, great for bundles and combined orders.",
+        tags: ["Bundle"] }
+    ];
+
+    const productsGrid = document.getElementById("productsGrid");
+    const emptyState = document.getElementById("emptyState");
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const typeFilter = document.getElementById("typeFilter");
+
+    function formatMoney(v) {
+      return "$" + v.toFixed(2);
+    }
+
+    function renderProducts(list) {
+      productsGrid.innerHTML = "";
+      if (!list.length) {
+        emptyState.style.display = "block";
+        return;
+      }
+      emptyState.style.display = "none";
+
+      list.forEach(p => {
+        const card = document.createElement("article");
+        card.className = "product-card";
+
+        const imageWrap = document.createElement("div");
+        imageWrap.className = "product-image-wrap";
+        if (p.imageUrl) {
+          const img = document.createElement("img");
+          img.src = p.imageUrl;
+          img.alt = p.title;
+          imageWrap.appendChild(img);
+        } else {
+          imageWrap.textContent = "Product image placeholder (Google Sheet URL later)";
+        }
+
+        const title = document.createElement("div");
+        title.className = "product-title";
+        title.textContent = p.title;
+
+        const meta = document.createElement("div");
+        meta.className = "product-meta";
+        meta.textContent = `Category: ${p.category} · Type: ${p.type}`;
+
+        const desc = document.createElement("div");
+        desc.className = "product-desc";
+        desc.textContent = p.shortDesc;
+
+        const priceRow = document.createElement("div");
+        priceRow.className = "product-price-row";
+
+        const priceCol = document.createElement("div");
+        const priceLabel = document.createElement("div");
+        priceLabel.className = "product-price-label";
+        priceLabel.textContent = "Reseller Price";
+        const priceVal = document.createElement("div");
+        priceVal.className = "product-price";
+        priceVal.textContent = formatMoney(p.resellerPrice);
+        priceCol.appendChild(priceLabel);
+        priceCol.appendChild(priceVal);
+
+        const profitCol = document.createElement("div");
+        profitCol.className = "product-profit";
+        profitCol.innerHTML =
+          `Suggested eBay: ${formatMoney(p.suggestedLow)} – ${formatMoney(p.suggestedHigh)}<br>` +
+          `Est. profit: ${formatMoney(p.suggestedLow - p.resellerPrice)} – ${formatMoney(p.suggestedHigh - p.resellerPrice)}`;
+
+        priceRow.appendChild(priceCol);
+        priceRow.appendChild(profitCol);
+
+        const footer = document.createElement("div");
+        footer.className = "product-footer";
+
+        const tagSpan = document.createElement("span");
+        tagSpan.className = "product-tag";
+        tagSpan.textContent = p.tags && p.tags.length ? p.tags[0] : "Catalog Item";
+
+        const link = document.createElement("a");
+        link.href = "index.html#apply";
+        link.className = "product-link";
+        link.textContent = "Apply to sell this →";
+
+        footer.appendChild(tagSpan);
+        footer.appendChild(link);
+
+        card.appendChild(imageWrap);
+        card.appendChild(title);
+        card.appendChild(meta);
+        card.appendChild(desc);
+        card.appendChild(priceRow);
+        card.appendChild(footer);
+
+        productsGrid.appendChild(card);
+      });
+    }
+
+    function applyFilters() {
+      const searchVal = searchInput.value.toLowerCase().trim();
+      const categoryVal = categoryFilter.value;
+      const typeVal = typeFilter.value;
+
+      const filtered = PRODUCTS_DATA.filter(p => {
+        const matchesSearch =
+          !searchVal ||
+          p.title.toLowerCase().includes(searchVal) ||
+          (p.shortDesc && p.shortDesc.toLowerCase().includes(searchVal));
+
+        const matchesCategory = !categoryVal || p.category === categoryVal;
+        const matchesType = !typeVal || p.type === typeVal;
+
+        return matchesSearch && matchesCategory && matchesType;
+      });
+
+      renderProducts(filtered);
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    categoryFilter.addEventListener("change", applyFilters);
+    typeFilter.addEventListener("change", applyFilters);
+
+    renderProducts(PRODUCTS_DATA);
+  </script>
+</body>
+</html>
