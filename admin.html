@@ -2,485 +2,768 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin – Wholesale eBay Products</title>
+  <title>Wholesale eBay Products – U.S. Based Supplier for eBay Sellers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Wholesale eBay Products gives U.S.-based eBay sellers ready-to-sell products with images, titles, and descriptions done for you, plus special reseller pricing." />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
+      color: #111827;
+      background: #f3f4f6;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1f2937);
+      color: #f9fafb;
+      padding: 20px 20px 32px;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-links a {
       color: #e5e7eb;
-      min-height: 100vh;
+      margin-left: 16px;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover { color: #ffffff; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.3fr);
+      gap: 28px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      margin-bottom: 14px;
+    }
+    .hero p.subtitle {
+      font-size: 1.02rem;
+      color: #e5e7eb;
+      margin-bottom: 16px;
+    }
+    .hero ul {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+    .hero ul li {
+      font-size: 0.94rem;
+      margin-bottom: 6px;
+    }
+    .hero ul li::before {
+      content: "✔";
+      margin-right: 8px;
+      color: #22c55e;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #3b82f6;
+      color: #f9fafb;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.94rem;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-primary:hover { background: #2563eb; }
+
+    .btn-outline {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      border: 1px solid #9ca3af;
+      color: #e5e7eb;
+      margin-left: 8px;
+    }
+    .btn-outline:hover { border-color: #f9fafb; color: #ffffff; }
+
+    .hero-small-text {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }
+
+    .hero-card {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+    }
+    .hero-card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+    .hero-card p {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+    .hero-card ul {
+      list-style: disc;
+      padding-left: 18px;
+      font-size: 0.84rem;
+      color: #d1d5db;
+    }
+
+    main { padding: 28px 20px 40px; }
+    section {
+      margin-bottom: 34px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px 18px 22px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    }
+    section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+    section p {
+      margin-bottom: 8px;
+      font-size: 0.94rem;
+      color: #374151;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .step-card {
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      background: #f9fafb;
+    }
+    .step-number {
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: #2563eb;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .step-card h3 {
+      font-size: 0.98rem;
+      margin-bottom: 4px;
+    }
+    .step-card p {
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+
+    /* Product card styles (shared with Featured Products) */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .product-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 12px 12px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-image-wrap {
+      background: #e5e7eb;
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 8px;
+      min-height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      font-size: 0.78rem;
+      color: #6b7280;
+      text-align: center;
     }
-    .wrap {
-      max-width: 980px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
-      gap: 18px;
-    }
-    @media (max-width: 860px) {
-      .wrap { grid-template-columns: 1fr; }
-    }
-    .card {
-      background: #020617;
-      border-radius: 16px;
-      padding: 20px 20px 22px;
-      border: 1px solid #1f2937;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
-    }
-    h1 {
-      font-size: 1.4rem;
-      margin-bottom: 6px;
-    }
-    h2 {
-      font-size: 1.05rem;
-      margin-top: 14px;
-      margin-bottom: 6px;
-    }
-    p {
-      font-size: 0.9rem;
-      color: #cbd5f5;
-      margin-bottom: 6px;
-    }
-    code {
-      background: #020617;
-      border: 1px solid #1e293b;
-      padding: 2px 4px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-    }
-    a {
-      color: #38bdf8;
-      text-decoration: none;
-      word-break: break-all;
-    }
-    a:hover { text-decoration: underline; }
-    ul {
-      margin-left: 18px;
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-      color: #e5e7eb;
-    }
-    .label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9ca3af;
-      margin-top: 10px;
-    }
-    .box {
-      background: #020617;
+    .product-image-wrap img {
+      max-width: 100%;
+      max-height: 140px;
+      object-fit: contain;
       border-radius: 8px;
-      padding: 6px 8px;
-      font-size: 0.85rem;
-      border: 1px solid #1f2937;
-      margin-top: 4px;
+      display: block;
     }
-    .pill {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid #4b5563;
+    .product-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+    .product-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .product-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .product-price-label {
       font-size: 0.75rem;
-      color: #e5e7eb;
-      margin-right: 4px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .product-price {
+      font-weight: 700;
+      color: #047857;
+    }
+    .product-shipping-note {
+      font-size: 0.72rem;
+      color: #6b7280;
       margin-top: 2px;
     }
+    .product-profit {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #16a34a;
+      text-align: right;
+    }
+    .product-profit span.label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #15803d;
+      margin-bottom: 2px;
+    }
+    .product-price-info {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    .product-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .product-tag {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #bbf7d0;
+    }
+    .product-link {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .status-message {
+      font-size: 0.86rem;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .status-message.error {
+      color: #b91c1c;
+    }
+
     form label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       margin-bottom: 3px;
-      color: #cbd5f5;
+      color: #374151;
     }
     form input,
     form textarea,
     form select {
       width: 100%;
-      font-size: 0.82rem;
-      padding: 6px 8px;
+      font-size: 0.86rem;
+      padding: 7px 9px;
       border-radius: 8px;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
+      border: 1px solid #d1d5db;
       outline: none;
       margin-bottom: 8px;
     }
     form textarea {
       resize: vertical;
-      min-height: 70px;
+      min-height: 80px;
     }
     form input:focus,
     form textarea:focus,
     form select:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 1px rgba(56,189,248,0.3);
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
     }
     .form-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 8px;
-    }
-    .btn-primary {
-      display: inline-block;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.86rem;
-      font-weight: 600;
-      background: #3b82f6;
-      color: #f9fafb;
-      margin-top: 4px;
-    }
-    .btn-primary:hover {
-      background: #2563eb;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
     }
     .small-text {
       font-size: 0.78rem;
-      color: #9ca3af;
+      color: #6b7280;
       margin-top: 4px;
     }
-    .section-title {
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
 
-    /* Login overlay */
-    .login-wrap {
-      max-width: 360px;
-      width: 100%;
-    }
-    .login-title {
-      font-size: 1.3rem;
-      margin-bottom: 8px;
-    }
-    .login-error {
+    footer {
+      padding: 18px 20px 22px;
       font-size: 0.8rem;
-      color: #f97373;
-      margin-bottom: 6px;
-      display: none;
+      color: #6b7280;
+      text-align: center;
     }
-    .row-inline {
-      display: flex;
-      gap: 6px;
-      align-items: center;
+    footer a {
+      color: #4b5563;
+      margin: 0 6px;
+      font-size: 0.8rem;
     }
-    .row-inline input {
-      margin-bottom: 0;
-    }
-    .helper-btn {
-      border-radius: 999px;
-      border: 1px solid #4b5563;
-      padding: 6px 10px;
-      font-size: 0.78rem;
-      background: #020617;
-      color: #e5e7eb;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .helper-btn:hover {
-      background: #111827;
-    }
+    footer a:hover { color: #111827; }
   </style>
 </head>
 <body>
-  <!-- Login View -->
-  <div id="loginView" class="login-wrap" style="display:none;">
-    <div class="card">
-      <h1 class="login-title">Admin Login</h1>
-      <p>Enter your admin password to manage products.</p>
-      <form id="loginForm" onsubmit="return handleLogin(event);">
-        <label for="admin_password">Password</label>
-        <input
-          type="password"
-          id="admin_password"
-          autocomplete="current-password"
-          placeholder="Enter admin password"
-          required
-        />
-        <div id="loginError" class="login-error">Incorrect password. Try again.</div>
-        <button type="submit" class="btn-primary">Unlock Admin</button>
-        <div class="small-text" style="margin-top:8px;">
-          You can change this password directly in <code>admin.html</code>.
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="logo">Wholesale eBay Products</div>
+        <div class="nav-links">
+          <a href="#how-it-works">How it works</a>
+          <a href="#featured-products">Featured products</a>
+          <a href="products.html">All products</a>
+          <a href="#apply">Apply</a>
         </div>
-      </form>
-    </div>
-  </div>
+      </nav>
 
-  <!-- Admin Content -->
-  <div id="adminContent" class="wrap" style="display:none;">
-    <!-- LEFT: Info / Links -->
-    <div class="card">
-      <h1>Admin Panel – Wholesale eBay Products</h1>
-      <p>This page is just for you. Sellers will not see this.</p>
+      <div class="hero">
+        <div>
+          <h1>Done-For-You Product Packages for eBay Sellers.</h1>
+          <p class="subtitle">
+            Get ready-to-sell products with images, titles, and descriptions done for you —
+            plus special reseller pricing you can use to profit on eBay.
+          </p>
+          <ul>
+            <li>Product images, titles & descriptions included in every package</li>
+            <li>Special reseller pricing visible upfront</li>
+            <li>No account system – just apply once and we send your package</li>
+            <li>Use your own eBay account(s) and keep full control of your listings</li>
+          </ul>
+          <div>
+            <a href="#apply" class="btn-primary">Apply to Sell Wholesale</a>
+            <a href="products.html" class="btn-outline">View Product List</a>
+          </div>
+          <div class="hero-small-text">
+            U.S. & international eBay sellers welcome · No monthly fees
+          </div>
+        </div>
 
-      <h2>Contact Email</h2>
-      <p>
-        Primary contact for sellers and approvals:<br />
-        <strong>watchzapnsave@gmail.com</strong>
-      </p>
-
-      <h2>Google Sheets</h2>
-
-      <p class="label">Applications Sheet</p>
-      <div class="box">
-        All seller applications are stored here:<br /><br />
-        <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit#gid=0" target="_blank" rel="noopener">
-          Applications – Wholesale eBay Products
-        </a>
+        <div class="hero-card">
+          <h2>What You Get in Each Product Package</h2>
+          <p>When you’re approved for our program, we email you a product package that includes:</p>
+          <ul>
+            <li>Clean, ready-to-upload images for eBay</li>
+            <li>SEO-friendly eBay titles and keyword-rich descriptions</li>
+            <li>Reseller price, suggested selling price, and potential profit range</li>
+            <li>Simple instructions for using your personal Google Sheet to track your sales with us</li>
+          </ul>
+        </div>
       </div>
-
-      <p class="label">Products Sheet</p>
-      <div class="box">
-        All products that appear on <code>products.html</code> come from this tab:<br /><br />
-        <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit#gid=790653222" target="_blank" rel="noopener">
-          Products – Wholesale eBay Products
-        </a>
-      </div>
-
-      <h2>Image workflow (simple)</h2>
-      <ul>
-        <li>Upload product photos into your Drive folder for images.</li>
-        <li>Right-click the image → <strong>Get link</strong> → set to “Anyone with link”.</li>
-        <li>Paste that link into the form on the right and click “Convert to direct URL”.</li>
-      </ul>
-      <p class="small-text">
-        The converted link goes into the <code>image_url</code> column and is used on the public products page.
-      </p>
     </div>
+  </header>
 
-    <!-- RIGHT: Add Product Form -->
-    <div class="card">
-      <div class="section-title">Add Product to Google Sheet</div>
-      <h2>New Product Form</h2>
-      <p>
-        Use this form to add products to your <strong>Products</strong> sheet. You can paste a normal Drive share link
-        and convert it into a direct image URL.
-      </p>
+  <main>
+    <div class="container">
+      <section id="how-it-works">
+        <h2>How Wholesale eBay Products Works</h2>
+        <p>We keep it very simple so you can stay focused on listing and selling.</p>
 
-      <!-- Using your dedicated Products Web App URL -->
-      <form
-        method="POST"
-        action="https://script.google.com/macros/s/AKfycbxh3di1ajR0pTj8NWTWflhiAuSvpp-ap2IcpEh9IUFAHIn98U9XrKxgo7thZ-OtUurdUQ/exec"
-      >
-        <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/admin.html" />
-
-        <div class="form-row">
-          <div>
-            <label for="product_id">Product ID (optional)</label>
-            <input
-              type="text"
-              id="product_id"
-              name="product_id"
-              placeholder="P001, P002, etc."
-            />
+        <div class="steps">
+          <div class="step-card">
+            <div class="step-number">Step 1</div>
+            <h3>Apply Once</h3>
+            <p>Fill out the short form below with your eBay account(s), WhatsApp, and Gmail so we can contact you.</p>
           </div>
-          <div>
-            <label for="product_type">Product Type *</label>
-            <select id="product_type" name="product_type" required>
-              <option value="">Select one</option>
-              <option value="Digital">Digital</option>
-              <option value="Physical">Physical</option>
-            </select>
+          <div class="step-card">
+            <div class="step-number">Step 2</div>
+            <h3>Get Your Product Package</h3>
+            <p>We send you a starter package of products: images, titles, descriptions, and reseller pricing.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">Step 3</div>
+            <h3>List & Sell on Your eBay</h3>
+            <p>You list the products on your own eBay account and control your final selling price.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">Step 4</div>
+            <h3>Track Sales in Your Sheet</h3>
+            <p>You get a personal Google Sheet to record which of our products you’ve sold so we can fulfill or process your orders.</p>
           </div>
         </div>
+      </section>
 
-        <label for="product_name">Full Product Name *</label>
-        <input
-          type="text"
-          id="product_name"
-          name="product_name"
-          placeholder="Pro Office Software License (Digital)"
-          required
-        />
+      <!-- Featured Products -->
+      <section id="featured-products">
+        <h2>Featured Products (Live from Our Sheet)</h2>
+        <p>
+          These are select products currently marked as <strong>Featured</strong> in our internal Products sheet.
+          All reseller prices shown include <strong>U.S. shipping</strong>, and each card shows the
+          <strong>Potential Profit*</strong> range based on our suggested selling prices.
+        </p>
 
-        <label for="short_name">Short Name (for cards)</label>
-        <input
-          type="text"
-          id="short_name"
-          name="short_name"
-          placeholder="Pro Office License"
-        />
+        <div id="featuredStatus" class="status-message">Loading featured products…</div>
 
-        <div class="form-row">
-          <div>
-            <label for="category">Category</label>
-            <input
-              type="text"
-              id="category"
-              name="category"
-              placeholder="Software, PC Accessories, Home & Office..."
-            />
-          </div>
+        <div id="featuredProductsGrid" class="products-grid">
+          <!-- Featured products injected here -->
         </div>
 
-        <!-- Image URL + helper -->
-        <label for="image_url">Image URL (Drive direct link)</label>
-        <div class="row-inline">
-          <input
-            type="url"
-            id="image_url"
-            name="image_url"
-            placeholder="https://drive.google.com/uc?export=view&id=FILE_ID"
-          />
-          <button type="button" class="helper-btn" onclick="convertDriveLink()">
-            Convert from share link
-          </button>
-        </div>
-        <div class="small-text">
-          Paste a Drive link like <code>https://drive.google.com/file/d/FILE_ID/view?usp=sharing</code> and click
-          “Convert from share link”. It will be turned into a direct image URL for you.
-        </div>
+        <p class="small-text">
+          * Potential profit is an estimate based on suggested eBay prices and typical fees. Your actual results may
+          vary depending on your final selling price, shipping options, fees, and return rate.
+        </p>
+        <p class="small-text">
+          Featured products are a small sample of what’s available. Visit the
+          <a href="products.html">full product catalog</a> for more options and details.
+        </p>
+      </section>
 
-        <div class="form-row" style="margin-top:8px;">
-          <div>
-            <label for="reseller_price_usd">Reseller Price (USD) *</label>
-            <input
-              type="number"
-              step="0.01"
-              id="reseller_price_usd"
-              name="reseller_price_usd"
-              placeholder="24.00"
-              required
-            />
-          </div>
-          <div>
-            <label for="suggested_min_price_usd">Suggested eBay Min (USD)</label>
-            <input
-              type="number"
-              step="0.01"
-              id="suggested_min_price_usd"
-              name="suggested_min_price_usd"
-              placeholder="34.00"
-            />
-          </div>
-          <div>
-            <label for="suggested_max_price_usd">Suggested eBay Max (USD)</label>
-            <input
-              type="number"
-              step="0.01"
-              id="suggested_max_price_usd"
-              name="suggested_max_price_usd"
-              placeholder="39.00"
-            />
-          </div>
-        </div>
+      <section id="apply">
+        <h2>Apply to Get Your Wholesale eBay Product Package</h2>
+        <p>
+          Fill out this form to request access. We’ll review your information and send your starter product package,
+          plus your personal Google Sheet to track sales.
+        </p>
 
-        <div class="form-row">
-          <div>
-            <label for="is_featured">Featured?</label>
-            <select id="is_featured" name="is_featured">
-              <option value="FALSE">No</option>
-              <option value="TRUE">Yes</option>
-            </select>
-          </div>
-          <div>
-            <label for="active">Active? *</label>
-            <select id="active" name="active" required>
-              <option value="TRUE" selected>Yes (show on site)</option>
-              <option value="FALSE">No (hide on site)</option>
-            </select>
-          </div>
-        </div>
+        <!-- Form posts to your Google Apps Script Web App -->
+        <form
+          id="applyForm"
+          method="POST"
+          action="https://script.google.com/macros/s/AKfycbwYGu_olLf6y0yNiNWgEdWUWgt-W_mF-FtS8HIJbKezgKTXYyrA3NQcy87cRz_FNuj-/exec"
+        >
+          <input type="hidden" name="form_type" value="seller_application" />
+          <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/" />
 
-        <label for="notes">Notes (internal only)</label>
-        <textarea
-          id="notes"
-          name="notes"
-          placeholder="Any variations, bundle notes, or special instructions for this product."
-        ></textarea>
+          <div class="form-row">
+            <div>
+              <label for="full_name">Full Name</label>
+              <input type="text" id="full_name" name="full_name" required />
+            </div>
+            <div>
+              <label for="primary_email">Primary Email (Gmail preferred)</label>
+              <input type="email" id="primary_email" name="primary_email" placeholder="yourname@gmail.com" required />
+            </div>
+          </div>
 
-        <button type="submit" class="btn-primary">Add Product to Sheet</button>
-        <div class="small-text">
-          After submitting, this product will appear as a new row in the
-          <strong>Products</strong> sheet and on
-          <code>products.html</code> (if Active = TRUE).
-        </div>
-      </form>
+          <div class="form-row">
+            <div>
+              <label for="whatsapp">WhatsApp Contact (with country code)</label>
+              <input type="text" id="whatsapp" name="whatsapp" placeholder="+1 555 555 5555" />
+            </div>
+            <div>
+              <label for="country_region">Country / Region</label>
+              <input type="text" id="country_region" name="country_region" placeholder="United States, EU, etc." />
+            </div>
+          </div>
+
+          <label for="ebay_accounts">eBay Account(s)</label>
+          <textarea id="ebay_accounts" name="ebay_accounts" placeholder="List the eBay usernames you sell from."></textarea>
+
+          <div class="form-row">
+            <div>
+              <label for="experience">How long have you sold on eBay?</label>
+              <select id="experience" name="experience">
+                <option value="">Select one</option>
+                <option value="<6 months">Less than 6 months</option>
+                <option value="6-12 months">6–12 months</option>
+                <option value="1-3 years">1–3 years</option>
+                <option value="3+ years">More than 3 years</option>
+              </select>
+            </div>
+            <div>
+              <label for="monthly_volume">Approx. monthly sales volume</label>
+              <select id="monthly_volume" name="monthly_volume">
+                <option value="">Select one</option>
+                <option value="0-20 orders">0–20 orders</option>
+                <option value="21-100 orders">21–100 orders</option>
+                <option value="101-300 orders">101–300 orders</option>
+                <option value="300+ orders">300+ orders</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="notes">Anything we should know? (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Tell us what kinds of products you’re most interested in or how you plan to sell."></textarea>
+
+          <button type="submit" class="btn-primary">Submit Application</button>
+          <div class="small-text">
+            After approval, we’ll contact you from <strong>watchzapnsave@gmail.com</strong> with your product package
+            and your personal Google Sheet link.
+          </div>
+        </form>
+      </section>
     </div>
-  </div>
+  </main>
 
+  <footer>
+    <div style="margin-bottom:6px;">
+      &copy; 2025 Wholesale eBay Products. All rights reserved.
+    </div>
+    <div>
+      <a href="#">Terms</a> ·
+      <a href="#">Privacy</a>
+    </div>
+    <div style="margin-top:6px;">
+      Wholesale eBay Products is an independent supplier and is not affiliated with or endorsed by eBay or any product brand owners.
+    </div>
+  </footer>
+
+  <!-- CSV parser -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    // === SIMPLE PASSWORD PROTECTION ===
-    // Change this password by editing the string below:
-    const ADMIN_PASSWORD = "ChangeThisPassword123"; // <--- EDIT THIS
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv";
 
-    function showAdmin() {
-      document.getElementById("loginView").style.display = "none";
-      document.getElementById("adminContent").style.display = "grid";
-    }
+    const featuredStatus = document.getElementById("featuredStatus");
+    const featuredGrid = document.getElementById("featuredProductsGrid");
+    const MAX_FEATURED = 5;
 
-    function showLogin() {
-      document.getElementById("loginView").style.display = "block";
-      document.getElementById("adminContent").style.display = "none";
-    }
+    function normalizeImageUrl(raw) {
+      if (!raw) return "";
+      const url = String(raw).trim();
+      if (!url) return "";
 
-    function handleLogin(event) {
-      event.preventDefault();
-      const input = document.getElementById("admin_password").value.trim();
-      const error = document.getElementById("loginError");
-
-      if (input === ADMIN_PASSWORD) {
-        localStorage.setItem("wep_admin_authed", "true");
-        error.style.display = "none";
-        showAdmin();
-        return false;
-      } else {
-        error.style.display = "block";
-        return false;
-      }
-    }
-
-    // On load, auto-unlock if previously authenticated in this browser
-    (function initAdmin() {
-      const authed = localStorage.getItem("wep_admin_authed") === "true";
-      if (authed) {
-        showAdmin();
-      } else {
-        showLogin();
-      }
-    })();
-
-    // === Drive link helper ===
-    function convertDriveLink() {
-      const input = document.getElementById("image_url");
-      const raw = input.value.trim();
-      if (!raw) return;
-
-      // Try to extract FILE_ID from typical Drive share URLs
-      // Examples:
-      // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-      // https://drive.google.com/open?id=FILE_ID
       let fileId = "";
+      let m = url.match(/\/file\/d\/([^/]+)/);
+      if (m && m[1]) fileId = m[1];
 
-      // pattern 1: /file/d/FILE_ID/
-      const m1 = raw.match(/\/file\/d\/([^/]+)\//);
-      if (m1 && m1[1]) {
-        fileId = m1[1];
-      } else {
-        // pattern 2: ?id=FILE_ID
-        const m2 = raw.match(/[?&]id=([^&]+)/);
-        if (m2 && m2[1]) {
-          fileId = m2[1];
-        }
+      if (!fileId) {
+        m = url.match(/[?&]id=([^&]+)/);
+        if (m && m[1]) fileId = m[1];
       }
 
       if (!fileId) {
-        alert("Could not find a file ID in that link. Paste a normal Drive share link.");
-        return;
+        m = url.match(/uc\?export=\w+&id=([^&]+)/);
+        if (m && m[1]) fileId = m[1];
       }
 
-      const direct = "https://drive.google.com/uc?export=view&id=" + fileId;
-      input.value = direct;
+      if (fileId) {
+        return "https://drive.google.com/uc?export=download&id=" + fileId;
+      }
+      return url;
     }
+
+    async function fetchFeaturedProducts() {
+      try {
+        const res = await fetch(SHEET_CSV_URL);
+        const csv = await res.text();
+
+        const parsed = Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true
+        });
+
+        const allRows = parsed.data || [];
+
+        const activeFeatured = allRows.filter(p => {
+          const activeVal = String(p.active || "").toLowerCase().trim();
+          const isActive = activeVal === "true" || activeVal === "yes" || activeVal === "1";
+
+          const featVal = String(p.is_featured || "").toLowerCase().trim();
+          const isFeatured = featVal === "true" || featVal === "yes" || featVal === "1";
+
+          return isActive && isFeatured;
+        });
+
+        if (!activeFeatured.length) {
+          featuredStatus.textContent =
+            "No featured products are marked in your Products sheet yet. Set is_featured = TRUE on a few rows to show them here.";
+          featuredGrid.innerHTML = "";
+          return;
+        }
+
+        const subset = activeFeatured.slice(0, MAX_FEATURED);
+        featuredStatus.textContent = `Showing ${subset.length} featured product${subset.length === 1 ? "" : "s"}.`;
+
+        featuredGrid.innerHTML = "";
+        subset.forEach(p => {
+          const card = document.createElement("article");
+          card.className = "product-card";
+
+          // Image
+          const imgWrap = document.createElement("div");
+          imgWrap.className = "product-image-wrap";
+
+          const normalizedUrl = normalizeImageUrl(p.image_url);
+          if (normalizedUrl) {
+            const img = document.createElement("img");
+            img.src = normalizedUrl;
+            img.alt = p.short_name || p.product_name || "Product image";
+            img.onerror = () => {
+              imgWrap.textContent = "Product image not available";
+            };
+            imgWrap.appendChild(img);
+          } else {
+            imgWrap.textContent = "Product Image Placeholder";
+          }
+
+          // Title & meta
+          const title = document.createElement("div");
+          title.className = "product-title";
+          title.textContent = p.short_name || p.product_name || "Untitled Product";
+
+          const meta = document.createElement("div");
+          meta.className = "product-meta";
+          meta.textContent = [
+            p.category || null,
+            p.product_type ? `Type: ${p.product_type}` : null
+          ]
+            .filter(Boolean)
+            .join(" · ");
+
+          // Pricing + potential profit
+          const priceRow = document.createElement("div");
+          priceRow.className = "product-price-row";
+
+          const left = document.createElement("div");
+          const priceLabel = document.createElement("div");
+          priceLabel.className = "product-price-label";
+          priceLabel.textContent = "Reseller Price";
+
+          const priceVal = document.createElement("div");
+          priceVal.className = "product-price";
+
+          const reseller = p.reseller_price_usd ? Number(p.reseller_price_usd) : null;
+          priceVal.textContent =
+            reseller != null && !isNaN(reseller) ? `$${reseller.toFixed(2)}` : "TBD";
+
+          const shippingNote = document.createElement("div");
+          shippingNote.className = "product-shipping-note";
+          shippingNote.textContent = "US shipping included";
+
+          left.appendChild(priceLabel);
+          left.appendChild(priceVal);
+          left.appendChild(shippingNote);
+
+          // Potential profit block
+          const profitBlock = document.createElement("div");
+          profitBlock.className = "product-profit";
+
+          const labelSpan = document.createElement("span");
+          labelSpan.className = "label";
+          labelSpan.textContent = "Potential Profit*";
+
+          const valueSpan = document.createElement("span");
+          const minProfit = p.est_profit_min_usd ? Number(p.est_profit_min_usd) : null;
+          const maxProfit = p.est_profit_max_usd ? Number(p.est_profit_max_usd) : null;
+
+          const minPrice = p.suggested_min_price_usd ? Number(p.suggested_min_price_usd) : null;
+          const maxPrice = p.suggested_max_price_usd ? Number(p.suggested_max_price_usd) : null;
+
+          let profitText = "";
+
+          if (
+            minProfit != null &&
+            maxProfit != null &&
+            !isNaN(minProfit) &&
+            !isNaN(maxProfit)
+          ) {
+            profitText = `$${minProfit.toFixed(2)} – $${maxProfit.toFixed(2)}`;
+          } else if (
+            reseller != null &&
+            !isNaN(reseller) &&
+            minPrice != null &&
+            maxPrice != null &&
+            !isNaN(minPrice) &&
+            !isNaN(maxPrice)
+          ) {
+            const minP = Math.max(0, minPrice - reseller);
+            const maxP = Math.max(0, maxPrice - reseller);
+            profitText = `$${minP.toFixed(2)} – $${maxP.toFixed(2)}`;
+          } else {
+            profitText = "TBD";
+          }
+
+          valueSpan.textContent = profitText;
+
+          profitBlock.appendChild(labelSpan);
+          profitBlock.appendChild(valueSpan);
+
+          priceRow.appendChild(left);
+          priceRow.appendChild(profitBlock);
+
+          // Optional: suggested eBay line
+          const priceInfo = document.createElement("div");
+          priceInfo.className = "product-price-info";
+          if (
+            minPrice != null &&
+            maxPrice != null &&
+            !isNaN(minPrice) &&
+            !isNaN(maxPrice)
+          ) {
+            priceInfo.textContent = `Suggested eBay: $${minPrice.toFixed(2)}–$${maxPrice.toFixed(2)}`;
+          }
+
+          // Footer
+          const footer = document.createElement("div");
+          footer.className = "product-footer";
+
+          const tag = document.createElement("span");
+          tag.className = "product-tag";
+          tag.textContent = p.product_type ? `${p.product_type} · Featured` : "Featured";
+
+          const link = document.createElement("a");
+          link.className = "product-link";
+          link.href = "products.html";
+          link.textContent = "View details →";
+
+          footer.appendChild(tag);
+          footer.appendChild(link);
+
+          card.appendChild(imgWrap);
+          card.appendChild(title);
+          card.appendChild(meta);
+          card.appendChild(priceRow);
+          if (priceInfo.textContent) card.appendChild(priceInfo);
+          card.appendChild(footer);
+
+          featuredGrid.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error loading featured products:", err);
+        featuredStatus.textContent =
+          "Could not load featured products from Google Sheets. Check that the sheet is published and accessible.";
+        featuredStatus.classList.add("error");
+        featuredGrid.innerHTML = "";
+      }
+    }
+
+    fetchFeaturedProducts();
   </script>
 </body>
 </html>
