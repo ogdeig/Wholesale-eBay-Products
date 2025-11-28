@@ -4,562 +4,445 @@
   <meta charset="UTF-8" />
   <title>Products – Wholesale eBay Products</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Browse the wholesale eBay products available for approved sellers, with reseller pricing and suggested eBay price ranges." />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #111827;
-      background: #f3f4f6;
-      line-height: 1.6;
-      font-size: 16px;
+      background: #020617;
+      color: #e5e7eb;
+      min-height: 100vh;
     }
-    a { color: #2563eb; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    header {
-      background: linear-gradient(135deg, #0f172a, #1f2937);
-      color: #f9fafb;
-      padding: 20px 20px 22px;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    .container {
-      max-width: 1080px;
+    .page {
+      max-width: 1120px;
       margin: 0 auto;
+      padding: 20px 16px 40px;
     }
-    .nav {
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 20px;
       gap: 12px;
-      margin-bottom: 12px;
+      flex-wrap: wrap;
     }
     .logo {
       font-weight: 700;
       font-size: 1.1rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      color: #a5b4fc;
     }
     .nav-links a {
-      color: #e5e7eb;
-      margin-left: 16px;
       font-size: 0.9rem;
+      margin-left: 12px;
+      color: #9ca3af;
     }
-    .nav-links a:hover { color: #ffffff; }
-
-    .page-title {
-      margin-top: 8px;
-      margin-bottom: 4px;
-      font-size: 1.6rem;
-    }
-    .page-subtitle {
-      font-size: 0.94rem;
+    .nav-links a:hover {
       color: #e5e7eb;
-      max-width: 720px;
     }
-
-    main {
-      padding: 24px 20px 40px;
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
     }
-    section {
-      margin-bottom: 24px;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 18px 18px 20px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    .subtitle {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-bottom: 14px;
     }
-    section h2 {
-      font-size: 1.25rem;
-      margin-bottom: 8px;
-      color: #111827;
-    }
-    section p {
-      margin-bottom: 8px;
-      font-size: 0.92rem;
-      color: #374151;
-    }
-
-    .filters-row {
+    .pill-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin: 10px 0 4px;
-      font-size: 0.86rem;
+      gap: 6px;
+      margin-bottom: 18px;
     }
-    .filter-label {
-      font-weight: 600;
-      color: #4b5563;
-    }
-    .filter-select,
-    .filter-input {
-      font-size: 0.86rem;
-      padding: 6px 9px;
+    .pill {
+      padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid #d1d5db;
-      outline: none;
-      background: #f9fafb;
+      border: 1px solid #334155;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      background: #020617;
     }
-    .filter-select:focus,
-    .filter-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
-    }
+    .pill--green { border-color: #16a34a; color: #bbf7d0; }
+    .pill--blue { border-color: #3b82f6; color: #bfdbfe; }
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 14px;
-      margin-top: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
     }
-    .product-card {
-      background: #f9fafb;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      padding: 12px 12px 14px;
+    .card {
+      background: #020617;
+      border-radius: 18px;
+      border: 1px solid #1f2937;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.55);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
-    .product-image-wrap {
-      background: #e5e7eb;
-      border-radius: 10px;
-      padding: 8px;
-      margin-bottom: 8px;
-      min-height: 120px;
+    .card-top {
+      padding: 12px 12px 0;
+    }
+    .img-shell {
+      position: relative;
+      background: #0b1120;
+      border-radius: 14px;
+      overflow: hidden;
+      height: 150px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.78rem;
-      color: #6b7280;
-      text-align: center;
+      margin-bottom: 10px;
     }
-    .product-image-wrap img {
+    .img-shell img {
       max-width: 100%;
-      max-height: 140px;
+      max-height: 100%;
       object-fit: contain;
-      border-radius: 8px;
       display: block;
     }
-    .product-title {
+    .img-placeholder {
+      width: 90%;
+      height: 70%;
+      border-radius: 12px;
+      background: #111827;
+      border: 1px dashed #374151;
+    }
+    .card-title {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       margin-bottom: 2px;
-      color: #111827;
     }
-    .product-meta {
-      font-size: 0.8rem;
-      color: #6b7280;
-      margin-bottom: 6px;
+    .card-sub {
+      font-size: 0.82rem;
+      color: #9ca3af;
+      margin-bottom: 2px;
     }
-    .product-price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 0.88rem;
-      margin-bottom: 6px;
-      gap: 6px;
-      flex-wrap: wrap;
+    .card-body {
+      padding: 4px 12px 10px;
+      font-size: 0.82rem;
+      color: #d1d5db;
     }
-    .product-price-label {
-      font-size: 0.75rem;
-      color: #6b7280;
-      text-transform: uppercase;
+    .price-label {
+      font-size: 0.76rem;
       letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-top: 3px;
     }
-    .product-price {
+    .price-value {
+      color: #22c55e;
       font-weight: 700;
-      color: #047857;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
     }
-    .product-profit {
+    .muted {
       font-size: 0.8rem;
-      color: #4b5563;
-    }
-    .product-footer {
-      margin-top: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .product-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-    .product-tag {
-      font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #ecfdf5;
-      color: #047857;
-      border: 1px solid #bbf7d0;
-    }
-    .product-id {
-      font-size: 0.72rem;
       color: #9ca3af;
     }
-
-    .status-message {
-      font-size: 0.86rem;
-      color: #6b7280;
+    .price-row {
       margin-top: 6px;
+      margin-bottom: 8px;
     }
-    .status-message.error {
-      color: #b91c1c;
+    .card-footer {
+      padding: 6px 12px 10px;
+      border-top: 1px solid #111827;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    .small-text {
-      font-size: 0.8rem;
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid #374151;
+      color: #e5e7eb;
+    }
+    .tag--feat {
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+    .tag--type {
+      border-color: #38bdf8;
+      color: #bae6fd;
+    }
+    .card-id {
+      font-size: 0.72rem;
       color: #6b7280;
+    }
+    .status-bar {
       margin-top: 6px;
-    }
-
-    footer {
-      padding: 18px 20px 22px;
       font-size: 0.8rem;
-      color: #6b7280;
-      text-align: center;
+      color: #9ca3af;
     }
-    footer a {
-      color: #4b5563;
-      margin: 0 6px;
-      font-size: 0.8rem;
+    .status-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      margin-right: 4px;
+      background: #22c55e;
     }
-    footer a:hover { color: #111827; }
+    .status-dot.off {
+      background: #9ca3af;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav class="nav">
+  <div class="page">
+    <header>
+      <div>
         <div class="logo">Wholesale eBay Products</div>
-        <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="index.html#how-it-works">How it works</a>
-          <a href="products.html">All products</a>
-          <a href="index.html#apply">Apply</a>
-        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="./index.html">Back to landing</a>
+        <a href="./admin.html">Admin</a>
       </nav>
-      <h1 class="page-title">Product Catalog for Approved Sellers</h1>
-      <p class="page-subtitle">
-        This page shows the products available in our wholesale program, along with reseller pricing and suggested
-        eBay price ranges. Final availability and details are always confirmed in your personal product package.
+    </header>
+
+    <main>
+      <h1>All Wholesale Products</h1>
+      <p class="subtitle">
+        These are the items currently available for approved eBay sellers. Pricing and availability may change over time.
       </p>
-    </div>
-  </header>
+      <div class="pill-row">
+        <span class="pill pill--green">Live data from Google Sheets</span>
+        <span class="pill pill--blue">US warehouse / ready to ship</span>
+      </div>
 
-  <main>
-    <div class="container">
-      <section>
-        <h2>All Products</h2>
-        <p>
-          Products shown here come directly from our internal Google Sheet. Items marked as inactive in the sheet
-          won’t appear here. Highlighted products may change over time as demand shifts.
-        </p>
+      <div id="status" class="status-bar">
+        <span class="status-dot off"></span> Loading products from Google Sheets…
+      </div>
 
-        <div class="filters-row">
-          <span class="filter-label">Filter:</span>
-          <select id="categoryFilter" class="filter-select">
-            <option value="">All categories</option>
-          </select>
-          <select id="typeFilter" class="filter-select">
-            <option value="">All types</option>
-            <option value="Digital">Digital</option>
-            <option value="Physical">Physical</option>
-          </select>
-          <input
-            id="searchInput"
-            class="filter-input"
-            type="text"
-            placeholder="Search by name or ID..."
-          />
-        </div>
-
-        <div id="statusMessage" class="status-message">Loading products from Google Sheets…</div>
-
-        <div id="productsGrid" class="products-grid">
-          <!-- Products will be injected here by JavaScript -->
-        </div>
-
-        <div class="small-text">
-          Note: Reseller pricing and suggested price ranges are subject to change. Always refer to the
-          most recent product package we email you for final numbers.
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div style="margin-bottom:6px;">
-      &copy; 2025 Wholesale eBay Products. All rights reserved.
-    </div>
-    <div>
-      <a href="#">Terms</a> ·
-      <a href="#">Privacy</a>
-    </div>
-    <div style="margin-top:6px;">
-      Wholesale eBay Products is an independent supplier and is not affiliated with or endorsed by eBay or any product brand owners.
-    </div>
-  </footer>
-
-  <!-- CSV parser from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+      <section id="productsGrid" class="products-grid" aria-live="polite"></section>
+    </main>
+  </div>
 
   <script>
-    // ====== CONFIG: use your published Products sheet URL as CSV ======
-    // You gave this URL:
-    // https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pubhtml?gid=790653222&single=true
-    //
-    // Convert it to CSV output by changing "pubhtml" → "pub" and adding output=csv
-    const SHEET_CSV_URL =
+    // URL for your published Products sheet (CSV output)
+    const PRODUCTS_SHEET_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv";
 
-    const productsGrid = document.getElementById("productsGrid");
-    const statusMessage = document.getElementById("statusMessage");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const typeFilter = document.getElementById("typeFilter");
-    const searchInput = document.getElementById("searchInput");
+    const statusEl = document.getElementById("status");
+    const gridEl = document.getElementById("productsGrid");
 
-    let allProducts = [];
-
-    async function fetchProducts() {
-      try {
-        const res = await fetch(SHEET_CSV_URL);
-        const csv = await res.text();
-
-        const parsed = Papa.parse(csv, {
-          header: true,
-          skipEmptyLines: true
-        });
-
-        // CSV headers should match:
-        // product_id, product_name, short_name, category, product_type,
-        // reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
-        // est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes
-        allProducts = (parsed.data || [])
-          .map(row => row)
-          .filter(p => {
-            const activeVal = String(p.active || "").toLowerCase().trim();
-            return activeVal === "true" || activeVal === "yes" || activeVal === "1";
-          });
-
-        populateCategoryFilter(allProducts);
-        renderProducts();
-        statusMessage.textContent = allProducts.length
-          ? `Showing ${allProducts.length} active products.`
-          : "No active products found. Add some rows to your Products sheet.";
-      } catch (err) {
-        console.error("Error loading products:", err);
-        statusMessage.textContent =
-          "Could not load products from Google Sheets. Check that the sheet is published and accessible.";
-        statusMessage.classList.add("error");
+    function setStatus(text, ok) {
+      if (!statusEl) return;
+      statusEl.textContent = text;
+      const dot = statusEl.querySelector(".status-dot");
+      if (dot) {
+        dot.classList.toggle("off", !ok);
       }
     }
 
-    function populateCategoryFilter(products) {
-      const categories = new Set();
-      products.forEach(p => {
-        if (p.category) categories.add(p.category);
-      });
-      categoryFilter.innerHTML = '<option value="">All categories</option>';
-      Array.from(categories)
-        .sort()
-        .forEach(cat => {
-          const opt = document.createElement("option");
-          opt.value = cat;
-          opt.textContent = cat;
-          categoryFilter.appendChild(opt);
+    function csvToObjects(csvText) {
+      const lines = csvText.trim().split(/\r?\n/);
+      if (!lines.length) return [];
+      const headers = lines[0].split(",").map(h => h.trim());
+      const rows = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line.trim()) continue;
+
+        // Basic split, assumes no commas inside values.
+        const cols = line.split(",").map(c => c.trim());
+        const obj = {};
+        headers.forEach((h, idx) => {
+          obj[h] = (cols[idx] || "").trim();
         });
+        rows.push(obj);
+      }
+      return rows;
     }
 
-    function renderProducts() {
-      const categoryVal = categoryFilter.value.toLowerCase();
-      const typeVal = typeFilter.value.toLowerCase();
-      const searchVal = searchInput.value.trim().toLowerCase();
+    function renderProducts(products) {
+      gridEl.innerHTML = "";
 
-      const filtered = allProducts.filter(p => {
-        const categoryMatch =
-          !categoryVal || String(p.category || "").toLowerCase() === categoryVal;
-
-        const typeMatch =
-          !typeVal || String(p.product_type || "").toLowerCase() === typeVal.toLowerCase();
-
-        const inName =
-          String(p.product_name || "").toLowerCase().includes(searchVal) ||
-          String(p.short_name || "").toLowerCase().includes(searchVal) ||
-          String(p.product_id || "").toLowerCase().includes(searchVal);
-
-        return categoryMatch && typeMatch && (!searchVal || inName);
-      });
-
-      productsGrid.innerHTML = "";
-
-      if (!filtered.length) {
-        productsGrid.innerHTML =
-          '<div class="status-message">No products match your filters yet.</div>';
-        statusMessage.textContent = "No products match current filters.";
+      if (!products.length) {
+        gridEl.innerHTML = "<p>No active products found.</p>";
+        setStatus("No active products are currently listed.", false);
         return;
       }
 
-      statusMessage.textContent = `Showing ${filtered.length} product${
-        filtered.length === 1 ? "" : "s"
-      }.`;
+      setStatus(`Showing ${products.length} active product${products.length === 1 ? "" : "s"}.`, true);
 
-      filtered.forEach(p => {
+      products.forEach(p => {
         const card = document.createElement("article");
-        card.className = "product-card";
+        card.className = "card";
 
-        // Image block
-        const imgWrap = document.createElement("div");
-        imgWrap.className = "product-image-wrap";
+        const shortName = p.short_name || p.product_name || "Unnamed product";
+        const category = p.category || "";
+        const type = p.product_type || "";
 
-        if (p.image_url) {
+        const resellerPrice = p.reseller_price_usd ? parseFloat(p.reseller_price_usd) : null;
+        const suggMin = p.suggested_min_price_usd ? parseFloat(p.suggested_min_price_usd) : null;
+        const suggMax = p.suggested_max_price_usd ? parseFloat(p.suggested_max_price_usd) : null;
+        const estMin = p.est_profit_min_usd ? parseFloat(p.est_profit_min_usd) : null;
+        const estMax = p.est_profit_max_usd ? parseFloat(p.est_profit_max_usd) : null;
+
+        // Image logic – use URL exactly as stored
+        const imgUrlRaw = (p.image_url || "").trim();
+        const hasImg = !!imgUrlRaw;
+
+        const top = document.createElement("div");
+        top.className = "card-top";
+
+        const imgShell = document.createElement("div");
+        imgShell.className = "img-shell";
+
+        if (hasImg) {
           const img = document.createElement("img");
-          img.src = p.image_url;
-          img.alt = p.short_name || p.product_name || "Product image";
-          imgWrap.appendChild(img);
+          img.src = imgUrlRaw;
+          img.alt = shortName;
+
+          // If the URL fails at runtime, fall back to placeholder
+          img.onerror = () => {
+            imgShell.innerHTML = "";
+            const ph = document.createElement("div");
+            ph.className = "img-placeholder";
+            imgShell.appendChild(ph);
+          };
+
+          imgShell.appendChild(img);
         } else {
-          imgWrap.innerHTML = "Product Image Placeholder";
+          const placeholder = document.createElement("div");
+          placeholder.className = "img-placeholder";
+          imgShell.appendChild(placeholder);
         }
 
-        // Title & meta
-        const title = document.createElement("div");
-        title.className = "product-title";
-        title.textContent = p.short_name || p.product_name || "Untitled Product";
+        top.appendChild(imgShell);
 
-        const meta = document.createElement("div");
-        meta.className = "product-meta";
-        meta.textContent = [
-          p.category || null,
-          p.product_type ? `Type: ${p.product_type}` : null
-        ]
-          .filter(Boolean)
-          .join(" · ");
+        const titleEl = document.createElement("div");
+        titleEl.className = "card-title";
+        titleEl.textContent = shortName;
+        top.appendChild(titleEl);
 
-        // Pricing
-        const priceRow = document.createElement("div");
-        priceRow.className = "product-price-row";
+        const subEl = document.createElement("div");
+        subEl.className = "card-sub";
+        const bits = [];
+        if (category) bits.push(category);
+        if (type) bits.push(`Type: ${type}`);
+        subEl.textContent = bits.join(" • ");
+        top.appendChild(subEl);
 
-        const left = document.createElement("div");
+        const body = document.createElement("div");
+        body.className = "card-body";
+
         const priceLabel = document.createElement("div");
-        priceLabel.className = "product-price-label";
-        priceLabel.textContent = "Reseller Price";
+        priceLabel.className = "price-label";
+        priceLabel.textContent = "Reseller price";
+        body.appendChild(priceLabel);
 
         const priceVal = document.createElement("div");
-        priceVal.className = "product-price";
+        priceVal.className = "price-value";
+        priceVal.textContent = resellerPrice != null ? `$${resellerPrice.toFixed(2)}` : "—";
+        body.appendChild(priceVal);
 
-        const reseller = p.reseller_price_usd
-          ? Number(p.reseller_price_usd)
-          : null;
-        priceVal.textContent = reseller != null && !isNaN(reseller)
-          ? `$${reseller.toFixed(2)}`
-          : "TBD";
+        const priceRow = document.createElement("div");
+        priceRow.className = "price-row";
 
-        left.appendChild(priceLabel);
-        left.appendChild(priceVal);
+        const line1 = document.createElement("div");
+        line1.className = "muted";
+        if (suggMin != null && suggMax != null) {
+          line1.textContent = `Suggested eBay: $${suggMin.toFixed(2)}–$${suggMax.toFixed(2)}`;
+        } else {
+          line1.textContent = "Suggested eBay: —";
+        }
+        priceRow.appendChild(line1);
 
-        const profit = document.createElement("div");
-        profit.className = "product-profit";
+        const line2 = document.createElement("div");
+        line2.className = "muted";
+        if (estMin != null && estMax != null) {
+          line2.textContent = `Est. profit: $${estMin.toFixed(2)}–$${estMax.toFixed(2)}`;
+        } else {
+          line2.textContent = "Est. profit: —";
+        }
+        priceRow.appendChild(line2);
 
-        const minPrice = p.suggested_min_price_usd
-          ? Number(p.suggested_min_price_usd)
-          : null;
-        const maxPrice = p.suggested_max_price_usd
-          ? Number(p.suggested_max_price_usd)
-          : null;
-        const minProfit = p.est_profit_min_usd
-          ? Number(p.est_profit_min_usd)
-          : null;
-        const maxProfit = p.est_profit_max_usd
-          ? Number(p.est_profit_max_usd)
-          : null;
+        body.appendChild(priceRow);
 
-        const priceRange =
-          minPrice != null && maxPrice != null && !isNaN(minPrice) && !isNaN(maxPrice)
-            ? `Suggested eBay: $${minPrice.toFixed(2)}–$${maxPrice.toFixed(2)}`
-            : "";
-        const profitRange =
-          minProfit != null && maxProfit != null && !isNaN(minProfit) && !isNaN(maxProfit)
-            ? `Est. profit: $${minProfit.toFixed(2)}–$${maxProfit.toFixed(2)}`
-            : "";
+        if (p.notes) {
+          const notes = document.createElement("div");
+          notes.className = "muted";
+          notes.textContent = p.notes;
+          body.appendChild(notes);
+        }
 
-        profit.innerHTML = [priceRange, profitRange].filter(Boolean).join("<br />");
-
-        priceRow.appendChild(left);
-        priceRow.appendChild(profit);
-
-        // Footer
         const footer = document.createElement("div");
-        footer.className = "product-footer";
+        footer.className = "card-footer";
 
-        const tagsWrap = document.createElement("div");
-        tagsWrap.className = "product-tags";
+        const tagRow = document.createElement("div");
+        tagRow.className = "tag-row";
 
-        const isFeaturedStr = String(p.is_featured || "").toLowerCase().trim();
-        if (isFeaturedStr === "true" || isFeaturedStr === "yes" || isFeaturedStr === "1") {
-          const tag = document.createElement("span");
-          tag.className = "product-tag";
-          tag.textContent = "Featured";
-          tagsWrap.appendChild(tag);
+        if ((p.is_featured || "").toUpperCase() === "TRUE") {
+          const t = document.createElement("span");
+          t.className = "tag tag--feat";
+          t.textContent = "Featured";
+          tagRow.appendChild(t);
         }
 
-        if (p.product_type) {
-          const tag = document.createElement("span");
-          tag.className = "product-tag";
-          tag.textContent = p.product_type;
-          tagsWrap.appendChild(tag);
+        if (type) {
+          const t = document.createElement("span");
+          t.className = "tag tag--type";
+          t.textContent = type;
+          tagRow.appendChild(t);
         }
 
-        const id = document.createElement("div");
-        id.className = "product-id";
-        if (p.product_id) {
-          id.textContent = `ID: ${p.product_id}`;
+        if (category) {
+          const t = document.createElement("span");
+          t.className = "tag";
+          t.textContent = category;
+          tagRow.appendChild(t);
         }
 
-        footer.appendChild(tagsWrap);
-        footer.appendChild(id);
+        footer.appendChild(tagRow);
 
-        card.appendChild(imgWrap);
-        card.appendChild(title);
-        card.appendChild(meta);
-        card.appendChild(priceRow);
+        const idEl = document.createElement("div");
+        idEl.className = "card-id";
+        idEl.textContent = p.product_id ? `ID: ${p.product_id}` : "";
+        footer.appendChild(idEl);
+
+        card.appendChild(top);
+        card.appendChild(body);
         card.appendChild(footer);
 
-        productsGrid.appendChild(card);
+        gridEl.appendChild(card);
       });
     }
 
-    // Filter handlers
-    categoryFilter.addEventListener("change", renderProducts);
-    typeFilter.addEventListener("change", renderProducts);
-    searchInput.addEventListener("input", renderProducts);
+    async function loadProducts() {
+      try {
+        setStatus("Loading products from Google Sheets…", false);
+        const res = await fetch(PRODUCTS_SHEET_CSV_URL);
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+        const csvText = await res.text();
+        const rows = csvToObjects(csvText);
 
-    // Kick things off
-    fetchProducts();
+        // Filter down to active products
+        const active = rows.filter(r => (r.active || "").toUpperCase() === "TRUE");
+        renderProducts(active);
+      } catch (err) {
+        console.error(err);
+        setStatus("Error loading products. Please try again later.", false);
+        gridEl.innerHTML =
+          "<p>There was a problem loading products from Google Sheets.</p>";
+      }
+    }
+
+    loadProducts();
   </script>
-
-  <!--
-    HOW TO USE THIS:
-
-    1. In your Google Sheet:
-       - Make sure the "Products" tab has headers EXACTLY:
-         product_id, product_name, short_name, category, product_type,
-         reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
-         est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes
-
-    2. Mark any row you want visible with:
-       active = TRUE   (or yes, or 1)
-
-    3. Optional:
-       is_featured = TRUE for products you want tagged as "Featured" on this page.
-
-    4. Because you've already "Publish to web" on this sheet (that URL you sent),
-       this page pulls live data from:
-       https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv
-
-    5. Just edit the Products tab → refresh:
-       https://ogdeig.github.io/Wholesale-eBay-Products/products.html
-       and you’ll see your changes.
-  -->
 </body>
 </html>
