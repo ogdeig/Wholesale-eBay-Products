@@ -24,9 +24,7 @@
       gap: 18px;
     }
     @media (max-width: 860px) {
-      .wrap {
-        grid-template-columns: 1fr;
-      }
+      .wrap { grid-template-columns: 1fr; }
     }
     .card {
       background: #020617;
@@ -93,7 +91,6 @@
       margin-right: 4px;
       margin-top: 2px;
     }
-
     form label {
       display: block;
       font-size: 0.82rem;
@@ -186,33 +183,17 @@
         <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit#gid=790653222" target="_blank" rel="noopener">
           Products – Wholesale eBay Products
         </a>
-        <br /><br />
-        Expected columns:<br />
-        <span class="pill">product_id</span>
-        <span class="pill">product_name</span>
-        <span class="pill">short_name</span>
-        <span class="pill">category</span>
-        <span class="pill">product_type</span>
-        <span class="pill">reseller_price_usd</span>
-        <span class="pill">suggested_min_price_usd</span>
-        <span class="pill">suggested_max_price_usd</span>
-        <span class="pill">est_profit_min_usd</span>
-        <span class="pill">est_profit_max_usd</span>
-        <span class="pill">image_url</span>
-        <span class="pill">is_featured</span>
-        <span class="pill">active</span>
-        <span class="pill">notes</span>
       </div>
 
       <h2>How this Admin Form Works</h2>
       <ul>
-        <li>This page posts to the same Google Apps Script Web App as your seller application form.</li>
-        <li>When you submit a product here, it appends a new row into the <strong>Products</strong> sheet.</li>
+        <li>This page posts to a dedicated Google Apps Script Web App for products only.</li>
+        <li>Every submission appends a new row into the <strong>Products</strong> sheet.</li>
         <li>Your public <code>products.html</code> page reads active products from that sheet and shows them automatically.</li>
       </ul>
 
       <p class="small-text">
-        If you ever change the Apps Script Web App URL, update it here and on <code>index.html</code>.
+        If you ever change the Products Web App URL, update it in the form on the right.
       </p>
     </div>
 
@@ -224,13 +205,11 @@
         Use this form to add products to your <strong>Products</strong> sheet. Fields marked with * are recommended.
       </p>
 
-      <!-- IMPORTANT: SAME Web App URL as index.html (seller application) -->
+      <!-- IMPORTANT: replace NEW_PRODUCTS_WEB_APP_URL_HERE with your new Web App URL -->
       <form
         method="POST"
-        action="https://script.google.com/macros/s/AKfycbwYGu_olLf6y0yNiNWgEdWUWgt-W_mF-FtS8HIJbKezgKTXYyrA3NQcy87cRz_FNuj-/exec"
+        action="NEW_PRODUCTS_WEB_APP_URL_HERE"
       >
-        <!-- This is what tells Apps Script to use the Products handler -->
-        <input type="hidden" name="form_type" value="add_product" />
         <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/admin.html" />
 
         <div class="form-row">
