@@ -4,22 +4,23 @@
   <meta charset="UTF-8" />
   <title>Products – Wholesale eBay Products</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Browse wholesale-ready eBay products with reseller pricing and suggested eBay prices." />
+  <meta name="description" content="Browse the wholesale eBay products available for approved sellers, with reseller pricing and suggested eBay price ranges." />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f3f4f6;
       color: #111827;
+      background: #f3f4f6;
       line-height: 1.6;
+      font-size: 16px;
     }
     a { color: #2563eb; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     header {
-      background: #0f172a;
+      background: linear-gradient(135deg, #0f172a, #1f2937);
       color: #f9fafb;
-      padding: 18px 20px;
+      padding: 20px 20px 22px;
     }
     .container {
       max-width: 1080px;
@@ -30,10 +31,11 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
+      margin-bottom: 12px;
     }
     .logo {
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -44,79 +46,103 @@
     }
     .nav-links a:hover { color: #ffffff; }
 
+    .page-title {
+      margin-top: 8px;
+      margin-bottom: 4px;
+      font-size: 1.6rem;
+    }
+    .page-subtitle {
+      font-size: 0.94rem;
+      color: #e5e7eb;
+      max-width: 720px;
+    }
+
     main {
       padding: 24px 20px 40px;
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
+    section {
+      margin-bottom: 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 18px 20px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
     }
-    .page-intro {
-      font-size: 0.96rem;
-      color: #4b5563;
-      margin-bottom: 18px;
+    section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+    section p {
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+      color: #374151;
     }
 
-    .filter-bar {
+    .filters-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
-      margin-bottom: 18px;
-      background: #ffffff;
-      padding: 8px 10px;
-      border-radius: 999px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      margin: 10px 0 4px;
+      font-size: 0.86rem;
     }
-    .filter-bar input,
-    .filter-bar select {
+    .filter-label {
+      font-weight: 600;
+      color: #4b5563;
+    }
+    .filter-select,
+    .filter-input {
+      font-size: 0.86rem;
+      padding: 6px 9px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
-      padding: 6px 10px;
-      font-size: 0.86rem;
       outline: none;
-      min-width: 140px;
+      background: #f9fafb;
     }
-    .filter-bar input::placeholder { color: #9ca3af; }
+    .filter-select:focus,
+    .filter-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 14px;
       margin-top: 12px;
     }
     .product-card {
-      background: #ffffff;
+      background: #f9fafb;
       border-radius: 12px;
       border: 1px solid #e5e7eb;
       padding: 12px 12px 14px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
     }
     .product-image-wrap {
       background: #e5e7eb;
       border-radius: 10px;
       padding: 8px;
-      margin-bottom: 10px;
-      min-height: 130px;
+      margin-bottom: 8px;
+      min-height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #6b7280;
+      text-align: center;
     }
     .product-image-wrap img {
       max-width: 100%;
-      max-height: 150px;
-      border-radius: 8px;
+      max-height: 140px;
       object-fit: contain;
+      border-radius: 8px;
+      display: block;
     }
     .product-title {
       font-weight: 600;
-      font-size: 0.96rem;
-      margin-bottom: 4px;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
       color: #111827;
     }
     .product-meta {
@@ -124,19 +150,14 @@
       color: #6b7280;
       margin-bottom: 6px;
     }
-    .product-desc {
-      font-size: 0.84rem;
-      color: #4b5563;
-      margin-bottom: 8px;
-    }
     .product-price-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       font-size: 0.88rem;
       margin-bottom: 6px;
-      flex-wrap: wrap;
       gap: 6px;
+      flex-wrap: wrap;
     }
     .product-price-label {
       font-size: 0.75rem;
@@ -158,25 +179,39 @@
       justify-content: space-between;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
+    }
+    .product-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
     }
     .product-tag {
-      font-size: 0.75rem;
-      padding: 4px 8px;
+      font-size: 0.72rem;
+      padding: 3px 8px;
       border-radius: 999px;
       background: #ecfdf5;
       color: #047857;
       border: 1px solid #bbf7d0;
     }
-    .product-link {
-      font-size: 0.78rem;
-      font-weight: 500;
+    .product-id {
+      font-size: 0.72rem;
+      color: #9ca3af;
     }
 
-    .empty-state {
-      margin-top: 22px;
-      text-align: center;
-      font-size: 0.9rem;
+    .status-message {
+      font-size: 0.86rem;
       color: #6b7280;
+      margin-top: 6px;
+    }
+    .status-message.error {
+      color: #b91c1c;
+    }
+
+    .small-text {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 6px;
     }
 
     footer {
@@ -200,47 +235,57 @@
         <div class="logo">Wholesale eBay Products</div>
         <div class="nav-links">
           <a href="index.html">Home</a>
-          <a href="products.html">Products</a>
+          <a href="index.html#how-it-works">How it works</a>
+          <a href="products.html">All products</a>
           <a href="index.html#apply">Apply</a>
         </div>
       </nav>
+      <h1 class="page-title">Product Catalog for Approved Sellers</h1>
+      <p class="page-subtitle">
+        This page shows the products available in our wholesale program, along with reseller pricing and suggested
+        eBay price ranges. Final availability and details are always confirmed in your personal product package.
+      </p>
     </div>
   </header>
 
   <main>
     <div class="container">
-      <h1>Wholesale Product List</h1>
-      <p class="page-intro">
-        These are sample wholesale-friendly products designed for eBay sellers. For each approved seller, we email
-        a product package with images, titles, descriptions, and the same reseller pricing shown here.
-      </p>
+      <section>
+        <h2>All Products</h2>
+        <p>
+          Products shown here come directly from our internal Google Sheet. Items marked as inactive in the sheet
+          won’t appear here. Highlighted products may change over time as demand shifts.
+        </p>
 
-      <div class="filter-bar">
-        <input type="text" id="searchInput" placeholder="Search products..." />
-        <select id="categoryFilter">
-          <option value="">All categories</option>
-          <option value="Software & Licenses">Software & Licenses</option>
-          <option value="PC Accessories">PC Accessories</option>
-          <option value="Home & Office">Home & Office</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Gadgets">Gadgets</option>
-        </select>
-        <select id="typeFilter">
-          <option value="">All types</option>
-          <option value="Digital">Digital</option>
-          <option value="Physical">Physical</option>
-        </select>
-      </div>
+        <div class="filters-row">
+          <span class="filter-label">Filter:</span>
+          <select id="categoryFilter" class="filter-select">
+            <option value="">All categories</option>
+          </select>
+          <select id="typeFilter" class="filter-select">
+            <option value="">All types</option>
+            <option value="Digital">Digital</option>
+            <option value="Physical">Physical</option>
+          </select>
+          <input
+            id="searchInput"
+            class="filter-input"
+            type="text"
+            placeholder="Search by name or ID..."
+          />
+        </div>
 
-      <div id="productsGrid" class="products-grid"></div>
-      <div id="emptyState" class="empty-state" style="display:none;">
-        No products match your filters. Try clearing your search or category.
-      </div>
+        <div id="statusMessage" class="status-message">Loading products from Google Sheets…</div>
 
-      <p class="page-intro" style="font-size:0.84rem; margin-top:20px;">
-        Reseller pricing is shown so you can estimate your profit before applying. Final pricing and availability
-        may change and will always be confirmed in your product package email.
-      </p>
+        <div id="productsGrid" class="products-grid">
+          <!-- Products will be injected here by JavaScript -->
+        </div>
+
+        <div class="small-text">
+          Note: Reseller pricing and suggested price ranges are subject to change. Always refer to the
+          most recent product package we email you for final numbers.
+        </div>
+      </section>
     </div>
   </main>
 
@@ -249,172 +294,234 @@
       &copy; 2025 Wholesale eBay Products. All rights reserved.
     </div>
     <div>
-      <a href="index.html#apply">Apply</a> ·
       <a href="#">Terms</a> ·
       <a href="#">Privacy</a>
+    </div>
+    <div style="margin-top:6px;">
+      Wholesale eBay Products is an independent supplier and is not affiliated with or endorsed by eBay or any product brand owners.
     </div>
   </footer>
 
   <script>
-    // Later: replace this with a fetch() from your Google Sheet / Apps Script endpoint.
-    const PRODUCTS_DATA = [
-      // Software & digital
-      { id: "P001", title: "Pro Office Software License (Digital)", category: "Software & Licenses", type: "Digital",
-        imageUrl: "", resellerPrice: 24, suggestedLow: 34, suggestedHigh: 39,
-        shortDesc: "Single-user office suite license delivered by email. Great for students and home offices.",
-        tags: ["High Demand"] },
-      { id: "P002", title: "Antivirus Security Suite – 1 Year (Digital)", category: "Software & Licenses", type: "Digital",
-        imageUrl: "", resellerPrice: 11, suggestedLow: 18, suggestedHigh: 22,
-        shortDesc: "1-year subscription license for a popular antivirus product, delivered digitally.",
-        tags: ["Recurring Buyers"] },
-      { id: "P003", title: "PDF Editor Pro License (Digital)", category: "Software & Licenses", type: "Digital",
-        imageUrl: "", resellerPrice: 16, suggestedLow: 24, suggestedHigh: 29,
-        shortDesc: "Professional PDF editing software license ideal for freelancers and small businesses.",
-        tags: ["Remote Work"] },
+    // ====== CONFIG: Your existing spreadsheet & Products tab ======
+    // This is the same sheet file you're using already:
+    const SHEET_ID = "1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4";
+    const SHEET_NAME = "Products";
 
-      // PC Accessories
-      { id: "P004", title: "Wireless Keyboard & Mouse Bundle", category: "PC Accessories", type: "Physical",
-        imageUrl: "", resellerPrice: 18.5, suggestedLow: 27, suggestedHigh: 32,
-        shortDesc: "2.4GHz wireless combo with quiet keys and ergonomic mouse. Plug-and-play.",
-        tags: ["Fast Ship"] },
-      { id: "P005", title: "RGB Gaming Mouse (Programmable)", category: "PC Accessories", type: "Physical",
-        imageUrl: "", resellerPrice: 11.5, suggestedLow: 19, suggestedHigh: 23,
-        shortDesc: "Adjustable DPI, RGB lighting, and side buttons. Perfect for budget gaming builds.",
-        tags: ["Gaming"] },
-      { id: "P006", title: "Extended Desk Mouse Pad (XL)", category: "PC Accessories", type: "Physical",
-        imageUrl: "", resellerPrice: 8, suggestedLow: 15, suggestedHigh: 19,
-        shortDesc: "Large, non-slip desk mat for keyboard and mouse. Great add-on item.",
-        tags: ["Add-On Sale"] },
-
-      // Home & Office
-      { id: "P007", title: "Ergonomic Laptop Stand", category: "Home & Office", type: "Physical",
-        imageUrl: "", resellerPrice: 14, suggestedLow: 22, suggestedHigh: 26,
-        shortDesc: "Adjustable aluminum stand to improve posture and airflow for laptops.",
-        tags: ["Home Office"] },
-      { id: "P008", title: "USB LED Desk Lamp with Touch Control", category: "Home & Office", type: "Physical",
-        imageUrl: "", resellerPrice: 10.5, suggestedLow: 18, suggestedHigh: 22,
-        shortDesc: "Modern LED lamp with touch controls and multiple brightness levels.",
-        tags: ["Giftable"] },
-      { id: "P009", title: "Cable Management Kit (20 pcs)", category: "Home & Office", type: "Physical",
-        imageUrl: "", resellerPrice: 6, suggestedLow: 12, suggestedHigh: 16,
-        shortDesc: "Clips and ties to organize cables behind desks and TVs.",
-        tags: ["Low Cost"] },
-
-      // Electronics / Gadgets
-      { id: "P010", title: "Bluetooth Earbuds with Charging Case", category: "Electronics", type: "Physical",
-        imageUrl: "", resellerPrice: 15.5, suggestedLow: 24, suggestedHigh: 29,
-        shortDesc: "Compact wireless earbuds with noise reduction and portable charging case.",
-        tags: ["Popular"] },
-      { id: "P011", title: "Portable Power Bank 10,000 mAh", category: "Electronics", type: "Physical",
-        imageUrl: "", resellerPrice: 12.5, suggestedLow: 20, suggestedHigh: 25,
-        shortDesc: "Slim backup battery for phones and tablets with dual USB output.",
-        tags: ["Travel"] },
-      { id: "P012", title: "USB-C Multiport Hub (7-in-1)", category: "Electronics", type: "Physical",
-        imageUrl: "", resellerPrice: 17, suggestedLow: 27, suggestedHigh: 32,
-        shortDesc: "Adds HDMI, USB, and card reader ports to laptops via USB-C.",
-        tags: ["Laptop Accessory"] },
-
-      // Small gadgets
-      { id: "P013", title: "Screen Cleaning Kit", category: "Gadgets", type: "Physical",
-        imageUrl: "", resellerPrice: 4, suggestedLow: 9, suggestedHigh: 12,
-        shortDesc: "Spray and microfiber cloth set for monitors, laptops, and phones.",
-        tags: ["Add-On"] },
-      { id: "P014", title: "Phone Stand & Holder (Foldable)", category: "Gadgets", type: "Physical",
-        imageUrl: "", resellerPrice: 3.5, suggestedLow: 8, suggestedHigh: 11,
-        shortDesc: "Pocket-sized phone stand perfect for desks and travel.",
-        tags: ["Impulse Buy"] },
-      { id: "P015", title: "USB-C to USB-A Adapter 3-Pack", category: "Gadgets", type: "Physical",
-        imageUrl: "", resellerPrice: 5, suggestedLow: 10, suggestedHigh: 13,
-        shortDesc: "3-pack of USB adapters, great for bundles and combined orders.",
-        tags: ["Bundle"] }
-    ];
+    // Google Visualization API JSON endpoint
+    // IMPORTANT: You must "Publish to the web" for this sheet/tab (instructions below).
+    const SHEET_URL =
+      "https://docs.google.com/spreadsheets/d/" +
+      SHEET_ID +
+      "/gviz/tq?tqx=out:json&sheet=" +
+      encodeURIComponent(SHEET_NAME);
 
     const productsGrid = document.getElementById("productsGrid");
-    const emptyState = document.getElementById("emptyState");
-    const searchInput = document.getElementById("searchInput");
+    const statusMessage = document.getElementById("statusMessage");
     const categoryFilter = document.getElementById("categoryFilter");
     const typeFilter = document.getElementById("typeFilter");
+    const searchInput = document.getElementById("searchInput");
 
-    function formatMoney(v) {
-      return "$" + v.toFixed(2);
+    let allProducts = [];
+
+    async function fetchProducts() {
+      try {
+        const res = await fetch(SHEET_URL);
+        const text = await res.text();
+
+        // The response is wrapped like: /*O_o*/ google.visualization.Query.setResponse({...});
+        const jsonStr = text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1);
+        const data = JSON.parse(jsonStr);
+
+        const cols = data.table.cols.map(c => c.label);
+        const rows = data.table.rows;
+
+        allProducts = rows
+          .map(row => {
+            const obj = {};
+            row.c.forEach((cell, idx) => {
+              const key = cols[idx];
+              obj[key] = cell ? cell.v : "";
+            });
+            return obj;
+          })
+          .filter(p => {
+            // Only show active products (active == TRUE or "TRUE")
+            const activeVal = String(p.active || "").toLowerCase();
+            return activeVal === "true" || activeVal === "yes" || activeVal === "1";
+          });
+
+        populateCategoryFilter(allProducts);
+        renderProducts();
+        statusMessage.textContent = allProducts.length
+          ? `Showing ${allProducts.length} active products.`
+          : "No active products found. Add some rows to your Products sheet.";
+      } catch (err) {
+        console.error("Error loading products:", err);
+        statusMessage.textContent =
+          "Could not load products from Google Sheets. Check your publish settings and sheet name.";
+        statusMessage.classList.add("error");
+      }
     }
 
-    function renderProducts(list) {
+    function populateCategoryFilter(products) {
+      const categories = new Set();
+      products.forEach(p => {
+        if (p.category) categories.add(p.category);
+      });
+      categoryFilter.innerHTML = '<option value="">All categories</option>';
+      Array.from(categories)
+        .sort()
+        .forEach(cat => {
+          const opt = document.createElement("option");
+          opt.value = cat;
+          opt.textContent = cat;
+          categoryFilter.appendChild(opt);
+        });
+    }
+
+    function renderProducts() {
+      const categoryVal = categoryFilter.value.toLowerCase();
+      const typeVal = typeFilter.value.toLowerCase();
+      const searchVal = searchInput.value.trim().toLowerCase();
+
+      const filtered = allProducts.filter(p => {
+        const categoryMatch =
+          !categoryVal || String(p.category || "").toLowerCase() === categoryVal;
+
+        const typeMatch =
+          !typeVal || String(p.product_type || "").toLowerCase() === typeVal.toLowerCase();
+
+        const inName =
+          String(p.product_name || "").toLowerCase().includes(searchVal) ||
+          String(p.short_name || "").toLowerCase().includes(searchVal) ||
+          String(p.product_id || "").toLowerCase().includes(searchVal);
+
+        return categoryMatch && typeMatch && (!searchVal || inName);
+      });
+
       productsGrid.innerHTML = "";
-      if (!list.length) {
-        emptyState.style.display = "block";
+
+      if (!filtered.length) {
+        productsGrid.innerHTML =
+          '<div class="status-message">No products match your filters yet.</div>';
+        statusMessage.textContent = "No products match current filters.";
         return;
       }
-      emptyState.style.display = "none";
 
-      list.forEach(p => {
+      statusMessage.textContent = `Showing ${filtered.length} product${
+        filtered.length === 1 ? "" : "s"
+      }.`;
+
+      filtered.forEach(p => {
         const card = document.createElement("article");
         card.className = "product-card";
 
-        const imageWrap = document.createElement("div");
-        imageWrap.className = "product-image-wrap";
-        if (p.imageUrl) {
+        // Image block
+        const imgWrap = document.createElement("div");
+        imgWrap.className = "product-image-wrap";
+
+        if (p.image_url) {
           const img = document.createElement("img");
-          img.src = p.imageUrl;
-          img.alt = p.title;
-          imageWrap.appendChild(img);
+          img.src = p.image_url;
+          img.alt = p.short_name || p.product_name || "Product image";
+          imgWrap.appendChild(img);
         } else {
-          imageWrap.textContent = "Product image placeholder (Google Sheet URL later)";
+          imgWrap.innerHTML = "Product Image Placeholder";
         }
 
+        // Title & meta
         const title = document.createElement("div");
         title.className = "product-title";
-        title.textContent = p.title;
+        title.textContent = p.short_name || p.product_name || "Untitled Product";
 
         const meta = document.createElement("div");
         meta.className = "product-meta";
-        meta.textContent = `Category: ${p.category} · Type: ${p.type}`;
+        meta.textContent = [
+          p.category || null,
+          p.product_type ? `Type: ${p.product_type}` : null
+        ]
+          .filter(Boolean)
+          .join(" · ");
 
-        const desc = document.createElement("div");
-        desc.className = "product-desc";
-        desc.textContent = p.shortDesc;
-
+        // Pricing
         const priceRow = document.createElement("div");
         priceRow.className = "product-price-row";
 
-        const priceCol = document.createElement("div");
+        const left = document.createElement("div");
         const priceLabel = document.createElement("div");
         priceLabel.className = "product-price-label";
         priceLabel.textContent = "Reseller Price";
+
         const priceVal = document.createElement("div");
         priceVal.className = "product-price";
-        priceVal.textContent = formatMoney(p.resellerPrice);
-        priceCol.appendChild(priceLabel);
-        priceCol.appendChild(priceVal);
+        priceVal.textContent = p.reseller_price_usd
+          ? `$${Number(p.reseller_price_usd).toFixed(2)}`
+          : "TBD";
 
-        const profitCol = document.createElement("div");
-        profitCol.className = "product-profit";
-        profitCol.innerHTML =
-          `Suggested eBay: ${formatMoney(p.suggestedLow)} – ${formatMoney(p.suggestedHigh)}<br>` +
-          `Est. profit: ${formatMoney(p.suggestedLow - p.resellerPrice)} – ${formatMoney(p.suggestedHigh - p.resellerPrice)}`;
+        left.appendChild(priceLabel);
+        left.appendChild(priceVal);
 
-        priceRow.appendChild(priceCol);
-        priceRow.appendChild(profitCol);
+        const profit = document.createElement("div");
+        profit.className = "product-profit";
 
+        const minPrice = p.suggested_min_price_usd
+          ? `$${Number(p.suggested_min_price_usd).toFixed(2)}`
+          : null;
+        const maxPrice = p.suggested_max_price_usd
+          ? `$${Number(p.suggested_max_price_usd).toFixed(2)}`
+          : null;
+        const minProfit = p.est_profit_min_usd
+          ? `$${Number(p.est_profit_min_usd).toFixed(2)}`
+          : null;
+        const maxProfit = p.est_profit_max_usd
+          ? `$${Number(p.est_profit_max_usd).toFixed(2)}`
+          : null;
+
+        const priceRange =
+          minPrice && maxPrice ? `Suggested eBay: ${minPrice}–${maxPrice}` : "";
+        const profitRange =
+          minProfit && maxProfit ? `Est. profit: ${minProfit}–${maxProfit}` : "";
+
+        profit.innerHTML = [priceRange, profitRange].filter(Boolean).join("<br />");
+
+        priceRow.appendChild(left);
+        priceRow.appendChild(profit);
+
+        // Footer
         const footer = document.createElement("div");
         footer.className = "product-footer";
 
-        const tagSpan = document.createElement("span");
-        tagSpan.className = "product-tag";
-        tagSpan.textContent = p.tags && p.tags.length ? p.tags[0] : "Catalog Item";
+        const tagsWrap = document.createElement("div");
+        tagsWrap.className = "product-tags";
 
-        const link = document.createElement("a");
-        link.href = "index.html#apply";
-        link.className = "product-link";
-        link.textContent = "Apply to sell this →";
+        const isFeaturedStr = String(p.is_featured || "").toLowerCase();
+        if (isFeaturedStr === "true" || isFeaturedStr === "yes" || isFeaturedStr === "1") {
+          const tag = document.createElement("span");
+          tag.className = "product-tag";
+          tag.textContent = "Featured";
+          tagsWrap.appendChild(tag);
+        }
 
-        footer.appendChild(tagSpan);
-        footer.appendChild(link);
+        if (p.product_type) {
+          const tag = document.createElement("span");
+          tag.className = "product-tag";
+          tag.textContent = p.product_type;
+          tagsWrap.appendChild(tag);
+        }
 
-        card.appendChild(imageWrap);
+        const id = document.createElement("div");
+        id.className = "product-id";
+        if (p.product_id) {
+          id.textContent = `ID: ${p.product_id}`;
+        }
+
+        footer.appendChild(tagsWrap);
+        footer.appendChild(id);
+
+        card.appendChild(imgWrap);
         card.appendChild(title);
         card.appendChild(meta);
-        card.appendChild(desc);
         card.appendChild(priceRow);
         card.appendChild(footer);
 
@@ -422,31 +529,47 @@
       });
     }
 
-    function applyFilters() {
-      const searchVal = searchInput.value.toLowerCase().trim();
-      const categoryVal = categoryFilter.value;
-      const typeVal = typeFilter.value;
+    // Filter handlers
+    categoryFilter.addEventListener("change", renderProducts);
+    typeFilter.addEventListener("change", renderProducts);
+    searchInput.addEventListener("input", () => {
+      // simple debounce-ish feel, but fast enough for small lists
+      renderProducts();
+    });
 
-      const filtered = PRODUCTS_DATA.filter(p => {
-        const matchesSearch =
-          !searchVal ||
-          p.title.toLowerCase().includes(searchVal) ||
-          (p.shortDesc && p.shortDesc.toLowerCase().includes(searchVal));
-
-        const matchesCategory = !categoryVal || p.category === categoryVal;
-        const matchesType = !typeVal || p.type === typeVal;
-
-        return matchesSearch && matchesCategory && matchesType;
-      });
-
-      renderProducts(filtered);
-    }
-
-    searchInput.addEventListener("input", applyFilters);
-    categoryFilter.addEventListener("change", applyFilters);
-    typeFilter.addEventListener("change", applyFilters);
-
-    renderProducts(PRODUCTS_DATA);
+    // Kick things off
+    fetchProducts();
   </script>
+
+  <!--
+    HOW TO HOOK THIS UP:
+
+    1. In Google Sheets, open:
+       Wholesale eBay Products – Applications
+
+    2. Click the "Products" tab (the one with columns:
+       product_id, product_name, short_name, category, product_type,
+       reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
+       est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes)
+
+    3. Go to: File → Share → Publish to web…
+       - Under "Link", choose: "Entire document" or specifically the "Products" sheet.
+       - Format can stay as "Web page".
+       - Click "Publish".
+
+       IMPORTANT: For the /gviz API, the sheet usually just needs to be accessible. If you run
+       into loading issues, also make sure:
+       - File → Share → "Anyone with the link" (Viewer).
+
+    4. You do NOT need to change the SHEET_URL in this file, because it already uses your
+       existing sheet ID (1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4) and the "Products" tab.
+
+    5. Add products by filling in rows on the Products sheet and setting:
+       - active = TRUE for items you want to show
+       - is_featured = TRUE for items you want to highlight visually
+
+    Then refresh:
+      https://ogdeig.github.io/Wholesale-eBay-Products/products.html
+  -->
 </body>
 </html>
