@@ -16,22 +16,32 @@
       justify-content: center;
       padding: 20px;
     }
+    .wrap {
+      max-width: 980px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+      gap: 18px;
+    }
+    @media (max-width: 860px) {
+      .wrap {
+        grid-template-columns: 1fr;
+      }
+    }
     .card {
       background: #020617;
       border-radius: 16px;
       padding: 20px 20px 22px;
       border: 1px solid #1f2937;
-      max-width: 640px;
-      width: 100%;
       box-shadow: 0 18px 45px rgba(0,0,0,0.6);
     }
     h1 {
       font-size: 1.4rem;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     h2 {
       font-size: 1.05rem;
-      margin-top: 16px;
+      margin-top: 14px;
       margin-bottom: 6px;
     }
     p {
@@ -58,14 +68,6 @@
       font-size: 0.9rem;
       color: #e5e7eb;
     }
-    .highlight {
-      background: #022c22;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      margin-top: 10px;
-      border: 1px solid #065f46;
-    }
     .label {
       font-size: 0.8rem;
       text-transform: uppercase;
@@ -81,56 +83,279 @@
       border: 1px solid #1f2937;
       margin-top: 4px;
     }
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      font-size: 0.75rem;
+      color: #e5e7eb;
+      margin-right: 4px;
+      margin-top: 2px;
+    }
+
+    form label {
+      display: block;
+      font-size: 0.82rem;
+      margin-bottom: 3px;
+      color: #cbd5f5;
+    }
+    form input,
+    form textarea,
+    form select {
+      width: 100%;
+      font-size: 0.82rem;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+      outline: none;
+      margin-bottom: 8px;
+    }
+    form textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+    form input:focus,
+    form textarea:focus,
+    form select:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.3);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 600;
+      background: #3b82f6;
+      color: #f9fafb;
+      margin-top: 4px;
+    }
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+    .small-text {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+    .section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Admin Panel – Wholesale eBay Products</h1>
-    <p>This page is just for you. Sellers will not see this.</p>
+  <div class="wrap">
+    <!-- LEFT: Info / Links -->
+    <div class="card">
+      <h1>Admin Panel – Wholesale eBay Products</h1>
+      <p>This page is just for you. Sellers will not see this.</p>
 
-    <h2>Contact Email</h2>
-    <p>
-      Primary contact for sellers and approvals:<br />
-      <strong>watchzapnsave@gmail.com</strong>
-    </p>
+      <h2>Contact Email</h2>
+      <p>
+        Primary contact for sellers and approvals:<br />
+        <strong>watchzapnsave@gmail.com</strong>
+      </p>
 
-    <h2>Google Sheet & Applications</h2>
-    <p class="label">Applications Sheet</p>
-    <div class="box">
-      This is the Google Sheet where all seller applications will be stored:<br /><br />
-      <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit?gid=0#gid=0" target="_blank" rel="noopener">
-        https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit?gid=0#gid=0
-      </a>
-    </div>
+      <h2>Google Sheets</h2>
 
-    <p class="label">Apps Script Web App URL</p>
-    <div class="box">
-      After you create and deploy your Apps Script Web App for handling the Apply form,
-      paste its URL here for reference and also set it as the <code>action</code> in the
-      form on <code>index.html</code>.<br /><br />
-      Example format (replace with your real one):<br />
-      <code>https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec</code>
-    </div>
+      <p class="label">Applications Sheet</p>
+      <div class="box">
+        All seller applications are stored here:<br /><br />
+        <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit#gid=0" target="_blank" rel="noopener">
+          Applications – Wholesale eBay Products
+        </a>
+      </div>
 
-    <div class="highlight">
-      <strong>Basic flow:</strong>
+      <p class="label">Products Sheet</p>
+      <div class="box">
+        All products that appear on <code>products.html</code> come from this tab:<br /><br />
+        <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit#gid=790653222" target="_blank" rel="noopener">
+          Products – Wholesale eBay Products
+        </a>
+        <br /><br />
+        Expected columns:<br />
+        <span class="pill">product_id</span>
+        <span class="pill">product_name</span>
+        <span class="pill">short_name</span>
+        <span class="pill">category</span>
+        <span class="pill">product_type</span>
+        <span class="pill">reseller_price_usd</span>
+        <span class="pill">suggested_min_price_usd</span>
+        <span class="pill">suggested_max_price_usd</span>
+        <span class="pill">est_profit_min_usd</span>
+        <span class="pill">est_profit_max_usd</span>
+        <span class="pill">image_url</span>
+        <span class="pill">is_featured</span>
+        <span class="pill">active</span>
+        <span class="pill">notes</span>
+      </div>
+
+      <h2>How this Admin Form Works</h2>
       <ul>
-        <li>Sellers fill out the Apply form on <code>index.html</code>.</li>
-        <li>The form <code>POST</code>s to your Apps Script Web App URL.</li>
-        <li>Apps Script appends a new row to your
-          <em>Wholesale eBay Products – Applications</em> Google Sheet at:<br />
-          <a href="https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit?gid=0#gid=0" target="_blank" rel="noopener">
-            https://docs.google.com/spreadsheets/d/1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4/edit?gid=0#gid=0
-          </a>
-        </li>
-        <li>You review the sheet and email approved sellers from <strong>watchzapnsave@gmail.com</strong> with their product package and personal Google Sheet.</li>
+        <li>This page posts to the same Google Apps Script Web App as your seller application form.</li>
+        <li>When you submit a product here, it appends a new row into the <strong>Products</strong> sheet.</li>
+        <li>Your public <code>products.html</code> page reads active products from that sheet and shows them automatically.</li>
       </ul>
+
+      <p class="small-text">
+        If you ever change the Apps Script Web App URL, update it here and on <code>index.html</code>.
+      </p>
     </div>
 
-    <p style="margin-top:12px; font-size:0.8rem; color:#9ca3af;">
-      Tip: Bookmark this page in your browser as “Wholesale Admin” so you always have quick access to your email,
-      application sheet link, and script URL.
-    </p>
+    <!-- RIGHT: Add Product Form -->
+    <div class="card">
+      <div class="section-title">Add Product to Google Sheet</div>
+      <h2>New Product Form</h2>
+      <p>
+        Use this form to add products to your <strong>Products</strong> sheet. Fields marked with * are recommended.
+      </p>
+
+      <!-- IMPORTANT: uses the SAME Web App URL as your Apply form -->
+      <form
+        method="POST"
+        action="https://script.google.com/macros/s/AKfycbwYGu_olLf6y0yNiNWgEdWUWgt-W_mF-FtS8HIJbKezgKTXYyrA3NQcy87cRz_FNuj-/exec"
+      >
+        <input type="hidden" name="form_type" value="add_product" />
+        <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/admin.html" />
+
+        <div class="form-row">
+          <div>
+            <label for="product_id">Product ID (optional)</label>
+            <input
+              type="text"
+              id="product_id"
+              name="product_id"
+              placeholder="P001, P002, etc."
+            />
+          </div>
+          <div>
+            <label for="product_type">Product Type *</label>
+            <select id="product_type" name="product_type" required>
+              <option value="">Select one</option>
+              <option value="Digital">Digital</option>
+              <option value="Physical">Physical</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="product_name">Full Product Name *</label>
+        <input
+          type="text"
+          id="product_name"
+          name="product_name"
+          placeholder="Pro Office Software License (Digital)"
+          required
+        />
+
+        <label for="short_name">Short Name (for cards)</label>
+        <input
+          type="text"
+          id="short_name"
+          name="short_name"
+          placeholder="Pro Office License"
+        />
+
+        <div class="form-row">
+          <div>
+            <label for="category">Category</label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              placeholder="Software, PC Accessories, Home & Office..."
+            />
+          </div>
+          <div>
+            <label for="image_url">Image URL</label>
+            <input
+              type="url"
+              id="image_url"
+              name="image_url"
+              placeholder="https://..."
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="reseller_price_usd">Reseller Price (USD) *</label>
+            <input
+              type="number"
+              step="0.01"
+              id="reseller_price_usd"
+              name="reseller_price_usd"
+              placeholder="24.00"
+              required
+            />
+          </div>
+          <div>
+            <label for="suggested_min_price_usd">Suggested eBay Min (USD)</label>
+            <input
+              type="number"
+              step="0.01"
+              id="suggested_min_price_usd"
+              name="suggested_min_price_usd"
+              placeholder="34.00"
+            />
+          </div>
+          <div>
+            <label for="suggested_max_price_usd">Suggested eBay Max (USD)</label>
+            <input
+              type="number"
+              step="0.01"
+              id="suggested_max_price_usd"
+              name="suggested_max_price_usd"
+              placeholder="39.00"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="is_featured">Featured?</label>
+            <select id="is_featured" name="is_featured">
+              <option value="FALSE">No</option>
+              <option value="TRUE">Yes</option>
+            </select>
+          </div>
+          <div>
+            <label for="active">Active? *</label>
+            <select id="active" name="active" required>
+              <option value="TRUE" selected>Yes (show on site)</option>
+              <option value="FALSE">No (hide on site)</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="notes">Notes (internal only)</label>
+        <textarea
+          id="notes"
+          name="notes"
+          placeholder="Any variations, bundle notes, or special instructions for this product."
+        ></textarea>
+
+        <button type="submit" class="btn-primary">Add Product to Sheet</button>
+        <div class="small-text">
+          After submitting, this product will appear as a new row in the
+          <strong>Products</strong> sheet and on
+          <code>products.html</code> (if Active = TRUE).
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>
