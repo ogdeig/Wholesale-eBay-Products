@@ -302,19 +302,17 @@
     </div>
   </footer>
 
-  <script>
-    // ====== CONFIG: Your existing spreadsheet & Products tab ======
-    // This is the same sheet file you're using already:
-    const SHEET_ID = "1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4";
-    const SHEET_NAME = "Products";
+  <!-- CSV parser from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-    // Google Visualization API JSON endpoint
-    // IMPORTANT: You must "Publish to the web" for this sheet/tab (instructions below).
-    const SHEET_URL =
-      "https://docs.google.com/spreadsheets/d/" +
-      SHEET_ID +
-      "/gviz/tq?tqx=out:json&sheet=" +
-      encodeURIComponent(SHEET_NAME);
+  <script>
+    // ====== CONFIG: use your published Products sheet URL as CSV ======
+    // You gave this URL:
+    // https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pubhtml?gid=790653222&single=true
+    //
+    // Convert it to CSV output by changing "pubhtml" → "pub" and adding output=csv
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv";
 
     const productsGrid = document.getElementById("productsGrid");
     const statusMessage = document.getElementById("statusMessage");
@@ -326,28 +324,22 @@
 
     async function fetchProducts() {
       try {
-        const res = await fetch(SHEET_URL);
-        const text = await res.text();
+        const res = await fetch(SHEET_CSV_URL);
+        const csv = await res.text();
 
-        // The response is wrapped like: /*O_o*/ google.visualization.Query.setResponse({...});
-        const jsonStr = text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1);
-        const data = JSON.parse(jsonStr);
+        const parsed = Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true
+        });
 
-        const cols = data.table.cols.map(c => c.label);
-        const rows = data.table.rows;
-
-        allProducts = rows
-          .map(row => {
-            const obj = {};
-            row.c.forEach((cell, idx) => {
-              const key = cols[idx];
-              obj[key] = cell ? cell.v : "";
-            });
-            return obj;
-          })
+        // CSV headers should match:
+        // product_id, product_name, short_name, category, product_type,
+        // reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
+        // est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes
+        allProducts = (parsed.data || [])
+          .map(row => row)
           .filter(p => {
-            // Only show active products (active == TRUE or "TRUE")
-            const activeVal = String(p.active || "").toLowerCase();
+            const activeVal = String(p.active || "").toLowerCase().trim();
             return activeVal === "true" || activeVal === "yes" || activeVal === "1";
           });
 
@@ -359,7 +351,7 @@
       } catch (err) {
         console.error("Error loading products:", err);
         statusMessage.textContent =
-          "Could not load products from Google Sheets. Check your publish settings and sheet name.";
+          "Could not load products from Google Sheets. Check that the sheet is published and accessible.";
         statusMessage.classList.add("error");
       }
     }
@@ -455,8 +447,12 @@
 
         const priceVal = document.createElement("div");
         priceVal.className = "product-price";
-        priceVal.textContent = p.reseller_price_usd
-          ? `$${Number(p.reseller_price_usd).toFixed(2)}`
+
+        const reseller = p.reseller_price_usd
+          ? Number(p.reseller_price_usd)
+          : null;
+        priceVal.textContent = reseller != null && !isNaN(reseller)
+          ? `$${reseller.toFixed(2)}`
           : "TBD";
 
         left.appendChild(priceLabel);
@@ -466,22 +462,26 @@
         profit.className = "product-profit";
 
         const minPrice = p.suggested_min_price_usd
-          ? `$${Number(p.suggested_min_price_usd).toFixed(2)}`
+          ? Number(p.suggested_min_price_usd)
           : null;
         const maxPrice = p.suggested_max_price_usd
-          ? `$${Number(p.suggested_max_price_usd).toFixed(2)}`
+          ? Number(p.suggested_max_price_usd)
           : null;
         const minProfit = p.est_profit_min_usd
-          ? `$${Number(p.est_profit_min_usd).toFixed(2)}`
+          ? Number(p.est_profit_min_usd)
           : null;
         const maxProfit = p.est_profit_max_usd
-          ? `$${Number(p.est_profit_max_usd).toFixed(2)}`
+          ? Number(p.est_profit_max_usd)
           : null;
 
         const priceRange =
-          minPrice && maxPrice ? `Suggested eBay: ${minPrice}–${maxPrice}` : "";
+          minPrice != null && maxPrice != null && !isNaN(minPrice) && !isNaN(maxPrice)
+            ? `Suggested eBay: $${minPrice.toFixed(2)}–$${maxPrice.toFixed(2)}`
+            : "";
         const profitRange =
-          minProfit && maxProfit ? `Est. profit: ${minProfit}–${maxProfit}` : "";
+          minProfit != null && maxProfit != null && !isNaN(minProfit) && !isNaN(maxProfit)
+            ? `Est. profit: $${minProfit.toFixed(2)}–$${maxProfit.toFixed(2)}`
+            : "";
 
         profit.innerHTML = [priceRange, profitRange].filter(Boolean).join("<br />");
 
@@ -495,7 +495,7 @@
         const tagsWrap = document.createElement("div");
         tagsWrap.className = "product-tags";
 
-        const isFeaturedStr = String(p.is_featured || "").toLowerCase();
+        const isFeaturedStr = String(p.is_featured || "").toLowerCase().trim();
         if (isFeaturedStr === "true" || isFeaturedStr === "yes" || isFeaturedStr === "1") {
           const tag = document.createElement("span");
           tag.className = "product-tag";
@@ -532,44 +532,34 @@
     // Filter handlers
     categoryFilter.addEventListener("change", renderProducts);
     typeFilter.addEventListener("change", renderProducts);
-    searchInput.addEventListener("input", () => {
-      // simple debounce-ish feel, but fast enough for small lists
-      renderProducts();
-    });
+    searchInput.addEventListener("input", renderProducts);
 
     // Kick things off
     fetchProducts();
   </script>
 
   <!--
-    HOW TO HOOK THIS UP:
+    HOW TO USE THIS:
 
-    1. In Google Sheets, open:
-       Wholesale eBay Products – Applications
+    1. In your Google Sheet:
+       - Make sure the "Products" tab has headers EXACTLY:
+         product_id, product_name, short_name, category, product_type,
+         reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
+         est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes
 
-    2. Click the "Products" tab (the one with columns:
-       product_id, product_name, short_name, category, product_type,
-       reseller_price_usd, suggested_min_price_usd, suggested_max_price_usd,
-       est_profit_min_usd, est_profit_max_usd, image_url, is_featured, active, notes)
+    2. Mark any row you want visible with:
+       active = TRUE   (or yes, or 1)
 
-    3. Go to: File → Share → Publish to web…
-       - Under "Link", choose: "Entire document" or specifically the "Products" sheet.
-       - Format can stay as "Web page".
-       - Click "Publish".
+    3. Optional:
+       is_featured = TRUE for products you want tagged as "Featured" on this page.
 
-       IMPORTANT: For the /gviz API, the sheet usually just needs to be accessible. If you run
-       into loading issues, also make sure:
-       - File → Share → "Anyone with the link" (Viewer).
+    4. Because you've already "Publish to web" on this sheet (that URL you sent),
+       this page pulls live data from:
+       https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv
 
-    4. You do NOT need to change the SHEET_URL in this file, because it already uses your
-       existing sheet ID (1EmyVj4waoPIqeK-EgrUmPtJklsIV7ePGHR7PmU_uQU4) and the "Products" tab.
-
-    5. Add products by filling in rows on the Products sheet and setting:
-       - active = TRUE for items you want to show
-       - is_featured = TRUE for items you want to highlight visually
-
-    Then refresh:
-      https://ogdeig.github.io/Wholesale-eBay-Products/products.html
+    5. Just edit the Products tab → refresh:
+       https://ogdeig.github.io/Wholesale-eBay-Products/products.html
+       and you’ll see your changes.
   -->
 </body>
 </html>
