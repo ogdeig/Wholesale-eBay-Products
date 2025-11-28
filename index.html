@@ -227,7 +227,7 @@
     .product-price-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: flex-start;
       font-size: 0.88rem;
       margin-bottom: 6px;
       gap: 6px;
@@ -249,8 +249,23 @@
       margin-top: 2px;
     }
     .product-profit {
-      font-size: 0.8rem;
-      color: #4b5563;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #16a34a;
+      text-align: right;
+    }
+    .product-profit span.label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #15803d;
+      margin-bottom: 2px;
+    }
+    .product-price-info {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-bottom: 4px;
     }
     .product-footer {
       margin-top: auto;
@@ -375,7 +390,7 @@
           <ul>
             <li>Clean, ready-to-upload images for eBay</li>
             <li>SEO-friendly eBay titles and keyword-rich descriptions</li>
-            <li>Reseller price, suggested selling price, and profit range</li>
+            <li>Reseller price, suggested selling price, and potential profit range</li>
             <li>Simple instructions for using your personal Google Sheet to track your sales with us</li>
           </ul>
         </div>
@@ -413,11 +428,13 @@
         </div>
       </section>
 
-      <!-- NEW: Live Featured Products from Google Sheets -->
+      <!-- Featured Products -->
       <section id="featured-products">
-        <h2>Featured Products</h2>
+        <h2>Featured Products (Live from Our Sheet)</h2>
         <p>
-          All prices are reseller prices with <strong>U.S. shipping included</strong>.
+          These are select products currently marked as <strong>Featured</strong> in our internal Products sheet.
+          All reseller prices shown include <strong>U.S. shipping</strong>, and each card shows the
+          <strong>Potential Profit*</strong> range based on our suggested selling prices.
         </p>
 
         <div id="featuredStatus" class="status-message">Loading featured products…</div>
@@ -426,6 +443,10 @@
           <!-- Featured products injected here -->
         </div>
 
+        <p class="small-text">
+          * Potential profit is an estimate based on suggested eBay prices and typical fees. Your actual results may
+          vary depending on your final selling price, shipping options, fees, and return rate.
+        </p>
         <p class="small-text">
           Featured products are a small sample of what’s available. Visit the
           <a href="products.html">full product catalog</a> for more options and details.
@@ -522,10 +543,9 @@
     </div>
   </footer>
 
-  <!-- CSV parser from CDN (same as products.html) -->
+  <!-- CSV parser -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    // ====== CONFIG: same Products sheet as products.html ======
     const SHEET_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vST7uNhUD6X51DlQd2ZrJETR2AXUljk2K8cqm39K8SLbxoLcFOK0Md57j9xYAjglStlyqIlRkZ1kYod/pub?gid=790653222&single=true&output=csv";
 
@@ -533,40 +553,28 @@
     const featuredGrid = document.getElementById("featuredProductsGrid");
     const MAX_FEATURED = 5;
 
-    // Normalize Google Drive-style links into a clean direct image URL
     function normalizeImageUrl(raw) {
       if (!raw) return "";
       const url = String(raw).trim();
       if (!url) return "";
 
       let fileId = "";
-
-      // pattern: /file/d/FILE_ID/
       let m = url.match(/\/file\/d\/([^/]+)/);
-      if (m && m[1]) {
-        fileId = m[1];
-      }
+      if (m && m[1]) fileId = m[1];
 
-      // pattern: ?id=FILE_ID
       if (!fileId) {
         m = url.match(/[?&]id=([^&]+)/);
-        if (m && m[1]) {
-          fileId = m[1];
-        }
+        if (m && m[1]) fileId = m[1];
       }
 
-      // pattern: uc?export=view&id=FILE_ID  (or export=download)
       if (!fileId) {
         m = url.match(/uc\?export=\w+&id=([^&]+)/);
-        if (m && m[1]) {
-          fileId = m[1];
-        }
+        if (m && m[1]) fileId = m[1];
       }
 
       if (fileId) {
         return "https://drive.google.com/uc?export=download&id=" + fileId;
       }
-
       return url;
     }
 
@@ -582,17 +590,15 @@
 
         const allRows = parsed.data || [];
 
-        const activeFeatured = allRows
-          .map(row => row)
-          .filter(p => {
-            const activeVal = String(p.active || "").toLowerCase().trim();
-            const isActive = activeVal === "true" || activeVal === "yes" || activeVal === "1";
+        const activeFeatured = allRows.filter(p => {
+          const activeVal = String(p.active || "").toLowerCase().trim();
+          const isActive = activeVal === "true" || activeVal === "yes" || activeVal === "1";
 
-            const featVal = String(p.is_featured || "").toLowerCase().trim();
-            const isFeatured = featVal === "true" || featVal === "yes" || featVal === "1";
+          const featVal = String(p.is_featured || "").toLowerCase().trim();
+          const isFeatured = featVal === "true" || featVal === "yes" || featVal === "1";
 
-            return isActive && isFeatured;
-          });
+          return isActive && isFeatured;
+        });
 
         if (!activeFeatured.length) {
           featuredStatus.textContent =
@@ -640,7 +646,7 @@
             .filter(Boolean)
             .join(" · ");
 
-          // Price + shipping
+          // Pricing + potential profit
           const priceRow = document.createElement("div");
           priceRow.className = "product-price-row";
 
@@ -664,30 +670,63 @@
           left.appendChild(priceVal);
           left.appendChild(shippingNote);
 
-          const profit = document.createElement("div");
-          profit.className = "product-profit";
+          // Potential profit block
+          const profitBlock = document.createElement("div");
+          profitBlock.className = "product-profit";
 
-          const minPrice = p.suggested_min_price_usd
-            ? Number(p.suggested_min_price_usd)
-            : null;
-          const maxPrice = p.suggested_max_price_usd
-            ? Number(p.suggested_max_price_usd)
-            : null;
+          const labelSpan = document.createElement("span");
+          labelSpan.className = "label";
+          labelSpan.textContent = "Potential Profit*";
 
+          const valueSpan = document.createElement("span");
+          const minProfit = p.est_profit_min_usd ? Number(p.est_profit_min_usd) : null;
+          const maxProfit = p.est_profit_max_usd ? Number(p.est_profit_max_usd) : null;
+
+          const minPrice = p.suggested_min_price_usd ? Number(p.suggested_min_price_usd) : null;
+          const maxPrice = p.suggested_max_price_usd ? Number(p.suggested_max_price_usd) : null;
+
+          let profitText = "";
+
+          if (
+            minProfit != null &&
+            maxProfit != null &&
+            !isNaN(minProfit) &&
+            !isNaN(maxProfit)
+          ) {
+            profitText = `$${minProfit.toFixed(2)} – $${maxProfit.toFixed(2)}`;
+          } else if (
+            reseller != null &&
+            !isNaN(reseller) &&
+            minPrice != null &&
+            maxPrice != null &&
+            !isNaN(minPrice) &&
+            !isNaN(maxPrice)
+          ) {
+            const minP = Math.max(0, minPrice - reseller);
+            const maxP = Math.max(0, maxPrice - reseller);
+            profitText = `$${minP.toFixed(2)} – $${maxP.toFixed(2)}`;
+          } else {
+            profitText = "TBD";
+          }
+
+          valueSpan.textContent = profitText;
+
+          profitBlock.appendChild(labelSpan);
+          profitBlock.appendChild(valueSpan);
+
+          priceRow.appendChild(left);
+          priceRow.appendChild(profitBlock);
+
+          // Optional: suggested eBay line
+          const priceInfo = document.createElement("div");
+          priceInfo.className = "product-price-info";
           if (
             minPrice != null &&
             maxPrice != null &&
             !isNaN(minPrice) &&
             !isNaN(maxPrice)
           ) {
-            profit.textContent = `Suggested eBay: $${minPrice.toFixed(
-              2
-            )}–$${maxPrice.toFixed(2)}`;
-          }
-
-          priceRow.appendChild(left);
-          if (profit.textContent) {
-            priceRow.appendChild(profit);
+            priceInfo.textContent = `Suggested eBay: $${minPrice.toFixed(2)}–$${maxPrice.toFixed(2)}`;
           }
 
           // Footer
@@ -710,6 +749,7 @@
           card.appendChild(title);
           card.appendChild(meta);
           card.appendChild(priceRow);
+          if (priceInfo.textContent) card.appendChild(priceInfo);
           card.appendChild(footer);
 
           featuredGrid.appendChild(card);
@@ -723,7 +763,6 @@
       }
     }
 
-    // Kick off featured fetch on load
     fetchFeaturedProducts();
   </script>
 </body>
