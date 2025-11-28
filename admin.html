@@ -168,6 +168,27 @@
       margin-bottom: 6px;
       display: none;
     }
+    .row-inline {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .row-inline input {
+      margin-bottom: 0;
+    }
+    .helper-btn {
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .helper-btn:hover {
+      background: #111827;
+    }
   </style>
 </head>
 <body>
@@ -182,7 +203,7 @@
           type="password"
           id="admin_password"
           autocomplete="current-password"
-          placeholder="Enter_Password"
+          placeholder="Enter admin password"
           required
         />
         <div id="loginError" class="login-error">Incorrect password. Try again.</div>
@@ -225,15 +246,14 @@
         </a>
       </div>
 
-      <h2>How this Admin Form Works</h2>
+      <h2>Image workflow (simple)</h2>
       <ul>
-        <li>This page posts to a dedicated Google Apps Script Web App for products only.</li>
-        <li>Every submission appends a new row into the <strong>Products</strong> sheet.</li>
-        <li>Your public <code>products.html</code> page reads active products from that sheet and shows them automatically.</li>
+        <li>Upload product photos into your Drive folder for images.</li>
+        <li>Right-click the image → <strong>Get link</strong> → set to “Anyone with link”.</li>
+        <li>Paste that link into the form on the right and click “Convert to direct URL”.</li>
       </ul>
-
       <p class="small-text">
-        If you ever change the Products Web App URL, update it in the form on the right.
+        The converted link goes into the <code>image_url</code> column and is used on the public products page.
       </p>
     </div>
 
@@ -242,15 +262,14 @@
       <div class="section-title">Add Product to Google Sheet</div>
       <h2>New Product Form</h2>
       <p>
-        Use this form to add products to your <strong>Products</strong> sheet. You can upload an image file directly,
-        so you don’t have to paste image URLs.
+        Use this form to add products to your <strong>Products</strong> sheet. You can paste a normal Drive share link
+        and convert it into a direct image URL.
       </p>
 
       <!-- Using your dedicated Products Web App URL -->
       <form
         method="POST"
         action="https://script.google.com/macros/s/AKfycbxh3di1ajR0pTj8NWTWflhiAuSvpp-ap2IcpEh9IUFAHIn98U9XrKxgo7thZ-OtUurdUQ/exec"
-        enctype="multipart/form-data"
       >
         <input type="hidden" name="return_url" value="https://ogdeig.github.io/Wholesale-eBay-Products/admin.html" />
 
@@ -301,18 +320,27 @@
               placeholder="Software, PC Accessories, Home & Office..."
             />
           </div>
-          <div>
-            <label for="image_file">Product Image (upload)</label>
-            <input
-              type="file"
-              id="image_file"
-              name="image_file"
-              accept="image/*"
-            />
-          </div>
         </div>
 
-        <div class="form-row">
+        <!-- Image URL + helper -->
+        <label for="image_url">Image URL (Drive direct link)</label>
+        <div class="row-inline">
+          <input
+            type="url"
+            id="image_url"
+            name="image_url"
+            placeholder="https://drive.google.com/uc?export=view&id=FILE_ID"
+          />
+          <button type="button" class="helper-btn" onclick="convertDriveLink()">
+            Convert from share link
+          </button>
+        </div>
+        <div class="small-text">
+          Paste a Drive link like <code>https://drive.google.com/file/d/FILE_ID/view?usp=sharing</code> and click
+          “Convert from share link”. It will be turned into a direct image URL for you.
+        </div>
+
+        <div class="form-row" style="margin-top:8px;">
           <div>
             <label for="reseller_price_usd">Reseller Price (USD) *</label>
             <input
@@ -374,8 +402,7 @@
         <div class="small-text">
           After submitting, this product will appear as a new row in the
           <strong>Products</strong> sheet and on
-          <code>products.html</code> (if Active = TRUE). If you upload an image, it will be stored in your Google Drive
-          folder and its URL will be saved to the sheet.
+          <code>products.html</code> (if Active = TRUE).
         </div>
       </form>
     </div>
@@ -384,7 +411,7 @@
   <script>
     // === SIMPLE PASSWORD PROTECTION ===
     // Change this password by editing the string below:
-    const ADMIN_PASSWORD = "password1234"; // <--- EDIT THIS
+    const ADMIN_PASSWORD = "ChangeThisPassword123"; // <--- EDIT THIS
 
     function showAdmin() {
       document.getElementById("loginView").style.display = "none";
@@ -403,6 +430,7 @@
 
       if (input === ADMIN_PASSWORD) {
         localStorage.setItem("wep_admin_authed", "true");
+        error.style.display = "none";
         showAdmin();
         return false;
       } else {
@@ -420,6 +448,39 @@
         showLogin();
       }
     })();
+
+    // === Drive link helper ===
+    function convertDriveLink() {
+      const input = document.getElementById("image_url");
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      // Try to extract FILE_ID from typical Drive share URLs
+      // Examples:
+      // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+      // https://drive.google.com/open?id=FILE_ID
+      let fileId = "";
+
+      // pattern 1: /file/d/FILE_ID/
+      const m1 = raw.match(/\/file\/d\/([^/]+)\//);
+      if (m1 && m1[1]) {
+        fileId = m1[1];
+      } else {
+        // pattern 2: ?id=FILE_ID
+        const m2 = raw.match(/[?&]id=([^&]+)/);
+        if (m2 && m2[1]) {
+          fileId = m2[1];
+        }
+      }
+
+      if (!fileId) {
+        alert("Could not find a file ID in that link. Paste a normal Drive share link.");
+        return;
+      }
+
+      const direct = "https://drive.google.com/uc?export=view&id=" + fileId;
+      input.value = direct;
+    }
   </script>
 </body>
 </html>
