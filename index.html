@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wholesale eBay Products – U.S. Based Supplier for eBay Sellers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Wholesale eBay Products gives U.S.-based eBay sellers ready-to-sell products with images, titles, and descriptions done for you, plus special reseller pricing." />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #111827;
+      background: #f3f4f6;
+      line-height: 1.6;
+    }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1f2937);
+      color: #f9fafb;
+      padding: 20px 20px 32px;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-links a {
+      color: #e5e7eb;
+      margin-left: 16px;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover { color: #ffffff; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.3fr);
+      gap: 28px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      margin-bottom: 14px;
+    }
+    .hero p.subtitle {
+      font-size: 1.02rem;
+      color: #e5e7eb;
+      margin-bottom: 16px;
+    }
+    .hero ul {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+    .hero ul li {
+      font-size: 0.94rem;
+      margin-bottom: 6px;
+    }
+    .hero ul li::before {
+      content: "✔";
+      margin-right: 8px;
+      color: #22c55e;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #3b82f6;
+      color: #f9fafb;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.94rem;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-primary:hover { background: #2563eb; }
+
+    .btn-outline {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      border: 1px solid #9ca3af;
+      color: #e5e7eb;
+      margin-left: 8px;
+    }
+    .btn-outline:hover { border-color: #f9fafb; color: #ffffff; }
+
+    .hero-small-text {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }
+
+    .hero-card {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+    }
+    .hero-card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+    .hero-card p {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+    .hero-card ul {
+      list-style: disc;
+      padding-left: 18px;
+      font-size: 0.84rem;
+      color: #d1d5db;
+    }
+
+    main { padding: 28px 20px 40px; }
+    section {
+      margin-bottom: 34px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px 18px 22px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    }
+    section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+    section p {
+      margin-bottom: 8px;
+      font-size: 0.94rem;
+      color: #374151;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .step-card {
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      background: #f9fafb;
+    }
+    .step-number {
+      font-weight: 700;
+      font-size: 0.86rem;
+      color: #2563eb;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .step-card h3 {
+      font-size: 0.98rem;
+      margin-bottom: 4px;
+    }
+    .step-card p {
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+
+    /* Featured products */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .product-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 12px 12px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-image-wrap {
+      background: #e5e7eb;
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 8px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #6b7280;
+      text-align: center;
+    }
+    .product-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+    .product-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .product-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .product-price-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .product-price {
+      font-weight: 700;
+      color: #047857;
+    }
+    .product-profit {
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+    .product-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+    .product-tag {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #bbf7d0;
+    }
+    .product-link {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Apply form */
+    form label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 3px;
+      color: #374151;
+    }
+    form input,
+    form textarea,
+    form select {
+      width: 100%;
+      font-size: 0.86rem;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      outline: none;
+      margin-bottom: 8px;
+    }
+    form textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    form input:focus,
+    form textarea:focus,
+    form select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .small-text {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .center { text-align: center; }
+
+    footer {
+      padding: 18px 20px 22px;
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+    }
+    footer a {
+      color: #4b5563;
+      margin: 0 6px;
+      font-size: 0.8rem;
+    }
+    footer a:hover { color: #111827; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="logo">Wholesale eBay Products</div>
+        <div class="nav-links">
+          <a href="#how-it-works">How it works</a>
+          <a href="#featured-products">Sample products</a>
+          <a href="products.html">All products</a>
+          <a href="#apply">Apply</a>
+        </div>
+      </nav>
+
+      <div class="hero">
+        <div>
+          <h1>Done-For-You Product Packages for eBay Sellers.</h1>
+          <p class="subtitle">
+            Get ready-to-sell products with images, titles, and descriptions done for you —
+            plus special reseller pricing you can use to profit on eBay.
+          </p>
+          <ul>
+            <li>Product images, titles & descriptions included in every package</li>
+            <li>Special reseller pricing visible upfront</li>
+            <li>No account system – just apply once and we send your package</li>
+            <li>Use your own eBay account(s) and keep full control of your listings</li>
+          </ul>
+          <div>
+            <a href="#apply" class="btn-primary">Apply to Sell Wholesale</a>
+            <a href="products.html" class="btn-outline">View Product List</a>
+          </div>
+          <div class="hero-small-text">
+            U.S. & international eBay sellers welcome · No monthly fees
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h2>What You Get in Each Product Package</h2>
+          <p>When you’re approved for our program, we email you a product package that includes:</p>
+          <ul>
+            <li>Clean, ready-to-upload images for eBay</li>
+            <li>SEO-friendly eBay titles and keyword-rich descriptions</li>
+            <li>Reseller price, suggested selling price, and profit range</li>
+            <li>Simple instructions for using your personal Google Sheet to track your sales with us</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- How it works -->
+      <section id="how-it-works">
+        <h2>How Wholesale eBay Products Works</h2>
+        <p>We keep it very simple so you can stay focused on listing and selling.</p>
+
+        <div class="steps">
+          <div class="step-card">
+            <div class="step-number">Step 1</div>
+            <h3>Apply Once</h3>
+            <p>Fill out the short form below with your eBay account(s), WhatsApp, and Gmail so we can contact you.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">Step 2</div>
+            <h3>Get Your Product Package</h3>
+            <p>We send you a starter package of products: images, titles, descriptions, and reseller pricing.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">Step 3</div>
+            <h3>List & Sell on Your eBay</h3>
+            <p>You list the products on your own eBay account and control your final selling price.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">Step 4</div>
+            <h3>Track Sales in Your Sheet</h3>
+            <p>You get a personal Google Sheet to record which of our products you’ve sold so we can fulfill or process your orders.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured products -->
+      <section id="featured-products">
+        <h2>Sample Products & Reseller Pricing</h2>
+        <p>
+          Here are a few example products. Full details and more options are listed on the Products page.
+        </p>
+
+        <div class="products-grid">
+          <article class="product-card">
+            <div class="product-image-wrap">
+              Product Image Placeholder<br />
+              (Office Software)
+            </div>
+            <div class="product-title">Pro Office Software License (Digital)</div>
+            <div class="product-meta">Category: Software &amp; Licenses · Type: Digital</div>
+            <div class="product-price-row">
+              <div>
+                <div class="product-price-label">Reseller Price</div>
+                <div class="product-price">$24.00</div>
+              </div>
+              <div class="product-profit">
+                Suggested eBay: $34–$39<br />
+                Est. profit: $10–$15
+              </div>
+            </div>
+            <div class="product-footer">
+              <span class="product-tag">High Demand</span>
+              <a href="products.html" class="product-link">View all products →</a>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <div class="product-image-wrap">
+              Product Image Placeholder<br />
+              (Keyboard & Mouse)
+            </div>
+            <div class="product-title">Wireless Keyboard &amp; Mouse Bundle</div>
+            <div class="product-meta">Category: PC Accessories · Type: Physical</div>
+            <div class="product-price-row">
+              <div>
+                <div class="product-price-label">Reseller Price</div>
+                <div class="product-price">$18.50</div>
+              </div>
+              <div class="product-profit">
+                Suggested eBay: $27–$32<br />
+                Est. profit: $8–$13
+              </div>
+            </div>
+            <div class="product-footer">
+              <span class="product-tag">Fast Ship</span>
+              <a href="products.html" class="product-link">View all products →</a>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <div class="product-image-wrap">
+              Product Image Placeholder<br />
+              (Laptop Stand)
+            </div>
+            <div class="product-title">Ergonomic Laptop Stand</div>
+            <div class="product-meta">Category: Home &amp; Office · Type: Physical</div>
+            <div class="product-price-row">
+              <div>
+                <div class="product-price-label">Reseller Price</div>
+                <div class="product-price">$14.00</div>
+              </div>
+              <div class="product-profit">
+                Suggested eBay: $22–$26<br />
+                Est. profit: $8–$12
+              </div>
+            </div>
+            <div class="product-footer">
+              <span class="product-tag">Steady Seller</span>
+              <a href="products.html" class="product-link">View all products →</a>
+            </div>
+          </article>
+        </div>
+
+        <p class="small-text">
+          Numbers above are sample figures. Final pricing is confirmed in your product package and may change over time.
+        </p>
+      </section>
+
+      <!-- Apply form -->
+      <section id="apply">
+        <h2>Apply to Get Your Wholesale eBay Product Package</h2>
+        <p>
+          Fill out this form to request access. We’ll review your information and send your starter product package,
+          plus your personal Google Sheet to track sales.
+        </p>
+
+        <!-- IMPORTANT:
+             Replace YOUR_APPS_SCRIPT_URL_HERE with your Google Apps Script Web App URL
+             that writes rows into your "Applications" Google Sheet.
+        -->
+        <form id="applyForm" method="POST" action="YOUR_APPS_SCRIPT_URL_HERE">
+          <!-- Hidden field to tell your script what this form is -->
+          <input type="hidden" name="form_type" value="seller_application" />
+
+          <div class="form-row">
+            <div>
+              <label for="full_name">Full Name</label>
+              <input type="text" id="full_name" name="full_name" required />
+            </div>
+            <div>
+              <label for="primary_email">Primary Email (Gmail preferred)</label>
+              <input type="email" id="primary_email" name="primary_email" placeholder="yourname@gmail.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="whatsapp">WhatsApp Contact (with country code)</label>
+              <input type="text" id="whatsapp" name="whatsapp" placeholder="+1 555 555 5555" />
+            </div>
+            <div>
+              <label for="country_region">Country / Region</label>
+              <input type="text" id="country_region" name="country_region" placeholder="United States, EU, etc." />
+            </div>
+          </div>
+
+          <label for="ebay_accounts">eBay Account(s)</label>
+          <textarea id="ebay_accounts" name="ebay_accounts" placeholder="List the eBay usernames you sell from."></textarea>
+
+          <div class="form-row">
+            <div>
+              <label for="experience">How long have you sold on eBay?</label>
+              <select id="experience" name="experience">
+                <option value="">Select one</option>
+                <option value="<6 months">Less than 6 months</option>
+                <option value="6-12 months">6–12 months</option>
+                <option value="1-3 years">1–3 years</option>
+                <option value="3+ years">More than 3 years</option>
+              </select>
+            </div>
+            <div>
+              <label for="monthly_volume">Approx. monthly sales volume</label>
+              <select id="monthly_volume" name="monthly_volume">
+                <option value="">Select one</option>
+                <option value="0-20 orders">0–20 orders</option>
+                <option value="21-100 orders">21–100 orders</option>
+                <option value="101-300 orders">101–300 orders</option>
+                <option value="300+ orders">300+ orders</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="notes">Anything we should know? (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Tell us what kinds of products you’re most interested in or how you plan to sell."></textarea>
+
+          <button type="submit" class="btn-primary">Submit Application</button>
+          <div class="small-text">
+            After approval, we’ll contact you from <strong>watchzapnsave@gmail.com</strong> with your product package
+            and your personal Google Sheet link.
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div style="margin-bottom:6px;">
+      &copy; 2025 Wholesale eBay Products. All rights reserved.
+    </div>
+    <div>
+      <a href="#">Terms</a> ·
+      <a href="#">Privacy</a>
+    </div>
+    <div style="margin-top:6px;">
+      Wholesale eBay Products is an independent supplier and is not affiliated with or endorsed by eBay or any product brand owners.
+    </div>
+  </footer>
+</body>
+</html>
